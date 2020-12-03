@@ -8,6 +8,24 @@ import config from '../config';
 
 const { paths } = config;
 
+class IgnoreNotFoundExportPlugin {
+  apply(compiler) {
+    const messageRegExp = /export '.*'( \(reexported as '.*'\))? was not found in/;
+
+    const doneHook = stats => {
+      stats.compilation.warnings = stats.compilation.warnings.filter(
+        warn => !(warn && messageRegExp.test(warn.message)),
+      );
+    };
+
+    if (compiler.hooks) {
+      compiler.hooks.done.tap('IgnoreNotFoundExportPlugin', doneHook);
+    } else {
+      compiler.plugin('done', doneHook);
+    }
+  }
+}
+
 const webpackConfig: webpack.Configuration = {
   name: 'client',
   target: 'web',
@@ -43,7 +61,8 @@ const webpackConfig: webpack.Configuration = {
     ],
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin({ tsconfig: paths.perf('tsconfig.json') }),
+    // new ForkTsCheckerWebpackPlugin({ tsconfig: paths.perf('tsconfig.json') }),
+    new IgnoreNotFoundExportPlugin(),
     new (CopyWebpackPlugin as any)([
       {
         from: paths.perfSrc('index.html'),
