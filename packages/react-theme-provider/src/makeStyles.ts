@@ -109,7 +109,8 @@ function resolveStyles(styles: any[], selector = '', result: any = {}): any {
         const declaration = cssifyDeclaration(rtl.key, rtl.value);
         const rtlCSS = stylis('', `.r${className}${selector}{${declaration}}`);
 
-        result[key] = [className, css, 'r' + className, rtlCSS];
+        // There is no sense to store RTL className as it's "r" + regular className
+        result[key] = [className, css, rtlCSS];
       } else {
         result[key] = [className, css];
       }
@@ -169,7 +170,11 @@ const DEFINITION_CACHE: Record<string, [string, string]> = {};
  */
 export function makeNonReactStyles(styles: any) {
   return function ___(selectors: any, options: any, ...classNames: (string | undefined)[]): string {
-    const resolvedClasses = resolveStylesToClasses(styles, options.tokens);
+    const resolvedStyles = styles.__PRIVATE_BUILD_DONE__ ? styles : resolveStylesToClasses(styles, options.tokens);
+
+    // if (!styles.__PRIVATE_BUILD_DONE__) {
+    //   console.log('Runtime transform was done', ...classNames, JSON.stringify(resolvedStyles));
+    // }
 
     const nonMakeClasses: string[] = [];
     const overrides: any = {};
@@ -197,7 +202,7 @@ export function makeNonReactStyles(styles: any) {
 
     // TODO: make me faster???
 
-    const matchedDefinitions = resolvedClasses.reduce((acc, definition) => {
+    const matchedDefinitions = resolvedStyles.reduce((acc, definition) => {
       if (matchesSelectors(definition[0], selectors)) {
         return Object.assign(acc, definition[1]);
       }

@@ -211,12 +211,13 @@ export const Provider: ComponentWithAs<'div', ProviderProps> & {
           ...unhandledProps,
         };
   const RenderProvider = outgoingContext.renderer.Provider;
+  const style = variablesToTokens(outgoingContext.theme.siteVariables);
 
   return (
     <RenderProvider>
       <Unstable_FluentContextProvider value={outgoingContext}>
         <PortalBoxContext.Provider value={element}>
-          <div className="provider-variables" style={variablesToTokens(outgoingContext.theme.siteVariables)}>
+          <div className="provider-variables" style={style}>
             <ElementType {...elementProps}>{children}</ElementType>
           </div>
         </PortalBoxContext.Provider>

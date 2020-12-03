@@ -65,6 +65,72 @@ const useStatusStyles = makeStyles([
   [{ size: 'largest' }, { width: 0, height: 0 }],
 ]);
 
+const staticStatusStyles = [
+  [
+    null,
+    {
+      alignItems: [
+        'a122n59',
+        '.a122n59{-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;}',
+      ],
+      display: [
+        'atuwxu6',
+        '.atuwxu6{display:-webkit-inline-box;display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;}',
+      ],
+      justifyContent: [
+        'a4d9j23',
+        '.a4d9j23{-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;}',
+      ],
+      verticalAlign: ['amrv4ls', '.amrv4ls{vertical-align:middle;}'],
+      borderRadius: ['a1chkv5c', '.a1chkv5c{border-radius:9999px;}'],
+      backgroundColor: ['a55zrps', '.a55zrps{background-color:var(--theme-colorScheme-default-background5);}'],
+    },
+  ],
+  [
+    { state: 'success' },
+    { backgroundColor: ['a109hrsy', '.a109hrsy{background-color:var(--theme-colorScheme-green-background);}'] },
+  ],
+  [
+    { state: 'info' },
+    { backgroundColor: ['a1qyxj3v', '.a1qyxj3v{background-color:var(--theme-colorScheme-brand-background);}'] },
+  ],
+  [
+    { state: 'warning' },
+    { backgroundColor: ['a1hm9uc3', '.a1hm9uc3{background-color:var(--theme-colorScheme-yellow-background);}'] },
+  ],
+  [
+    { state: 'error' },
+    { backgroundColor: ['ao0oefl', '.ao0oefl{background-color:var(--theme-colorScheme-red-background);}'] },
+  ],
+  [
+    { size: 'smallest' },
+    { width: ['a1h7vuc3', '.a1h7vuc3{width:0.4286rem;}'], height: ['ac65nva', '.ac65nva{height:0.4286rem;}'] },
+  ],
+  [
+    { size: 'smaller' },
+    { width: ['a17zuqj1', '.a17zuqj1{width:0.7143rem;}'], height: ['af2ublo', '.af2ublo{height:0.7143rem;}'] },
+  ],
+  [
+    { size: 'small' },
+    { width: ['a17zuqj1', '.a17zuqj1{width:0.7143rem;}'], height: ['af2ublo', '.af2ublo{height:0.7143rem;}'] },
+  ],
+  [
+    { size: 'medium' },
+    { width: ['a17zuqj1', '.a17zuqj1{width:0.7143rem;}'], height: ['af2ublo', '.af2ublo{height:0.7143rem;}'] },
+  ],
+  [
+    { size: 'large' },
+    { width: ['a17zuqj1', '.a17zuqj1{width:0.7143rem;}'], height: ['af2ublo', '.af2ublo{height:0.7143rem;}'] },
+  ],
+  [
+    { size: 'larger' },
+    { width: ['asxa7o6', '.asxa7o6{width:1.1429rem;}'], height: ['awdvutt', '.awdvutt{height:1.1429rem;}'] },
+  ],
+  [{ size: 'largest' }, { width: ['a3tsq5r', '.a3tsq5r{width:0;}'], height: ['aniina8', '.aniina8{height:0;}'] }],
+];
+staticStatusStyles.__PRIVATE_BUILD_DONE__ = true;
+const useStaticStatusStyles = makeStyles(staticStatusStyles);
+
 const useStatusIconStyles = makeStyles([
   [
     null,
@@ -95,6 +161,39 @@ const useStatusIconStyles = makeStyles([
   [{ state: 'error' }, tokens => ({ color: tokens.colorScheme.red.foreground2 })],
 ]);
 
+const staticStatusIconStyles = [
+  [
+    null,
+    {
+      alignItems: [
+        'a122n59',
+        '.a122n59{-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;}',
+      ],
+      display: [
+        'atuwxu6',
+        '.atuwxu6{display:-webkit-inline-box;display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;}',
+      ],
+      justifyContent: [
+        'a4d9j23',
+        '.a4d9j23{-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;}',
+      ],
+      width: ['apgmy0i', '.apgmy0i{width:0.5rem;}'],
+      height: ['a1pvjp0k', '.a1pvjp0k{height:0.5rem;}'],
+      ' > :first-childheight': ['afvh450', '.afvh450>:first-child{height:100%;}'],
+      ' > :first-childwidth': ['a1u2zova', '.a1u2zova>:first-child{width:100%;}'],
+      ' > :first-child svgheight': ['a11pmm19', '.a11pmm19>:first-child svg{height:100%;}'],
+      ' > :first-child svgwidth': ['a101b0fn', '.a101b0fn>:first-child svg{width:100%;}'],
+    },
+  ],
+  [null, { color: ['afnwo96', '.afnwo96{color:var(--theme-colorScheme-default-foreground4);}'] }],
+  [{ state: 'success' }, { color: ['a1uyxhfx', '.a1uyxhfx{color:var(--theme-colorScheme-green-foreground1);}'] }],
+  [{ state: 'info' }, { color: ['a19vcx5o', '.a19vcx5o{color:var(--theme-colorScheme-default-foreground2);}'] }],
+  [{ state: 'warning' }, { color: ['a17vukj9', '.a17vukj9{color:var(--theme-colorScheme-yellow-foreground2);}'] }],
+  [{ state: 'error' }, { color: ['a1j0lmpl', '.a1j0lmpl{color:var(--theme-colorScheme-red-foreground2);}'] }],
+];
+staticStatusIconStyles.__PRIVATE_BUILD_DONE__ = true;
+const useStaticStatusIconStyles = makeStyles(staticStatusIconStyles);
+
 /**
  * A Status represents someone's or something's state.
  *
@@ -108,8 +207,8 @@ export const Status: ComponentWithAs<'span', StatusProps> & FluentComponentStati
 
   const { className, icon, size, state } = props;
 
-  const rootClassName = useStatusStyles({ size, state }, statusClassName, className);
-  const iconClassName = useStatusIconStyles({ size, state });
+  const rootClassName = useStaticStatusStyles({ size, state }, statusClassName, className);
+  const iconClassName = useStaticStatusIconStyles({ size, state });
 
   const getA11Props = useAccessibility(props.accessibility, {
     debugName: Status.displayName,
