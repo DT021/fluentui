@@ -15,6 +15,9 @@ function hyphenateProperty(name: string) {
   return (cache[name] = msPattern.test(hName) ? '-' + hName : hName);
 }
 
+// TODO: ensure how it works
+// if property is CSS variables, do not hyphenate it
+
 export function cssifyDeclaration(property: string, value: string | number) {
   return hyphenateProperty(property) + ':' + value;
 }
