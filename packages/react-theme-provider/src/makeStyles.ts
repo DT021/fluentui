@@ -26,6 +26,45 @@ function isObject(val: any) {
 const canUseCSSVariables = window.CSS && CSS.supports('color', 'var(--c)');
 
 //
+// IE11 specific
+//
+
+// Create graph of inputs to map to output.
+const graph = new Map();
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const graphGet = (graphNode: Map<any, any>, path: any[]): any | undefined => {
+  for (const key of path) {
+    graphNode = graphNode.get(key);
+
+    if (!graphNode) {
+      return;
+    }
+  }
+
+  return graphNode;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const graphSet = (graphNode: Map<any, any>, path: any[], value: any) => {
+  for (let i = 0; i < path.length - 1; i++) {
+    const key = path[i];
+
+    let current = graphNode.get(key);
+
+    if (!current) {
+      current = new Map();
+
+      graphNode.set(key, current);
+    }
+
+    graphNode = current;
+  }
+
+  graphNode.set(path[path.length - 1], value);
+};
+
+//
 //
 //
 
@@ -132,12 +171,6 @@ function resolveStyles(styles: any[], selector = '', result: any = {}): any {
   return result;
 }
 
-// function resolveMatches(styles, selectors) {
-//   const matchedStyles = styles.reduce((acc, definition) => {
-//
-//   })
-// }
-
 function matchesSelectors(matcher: any, selectors: any): boolean {
   let matches = true;
 
@@ -184,7 +217,19 @@ function resolveStylesToClasses(definitions: any[], tokens: any) {
     // if CSS variables are not supported we have to re-eval only functions, otherwise static cache can be reused
 
     if (areTokenDependantStyles) {
-      return [matchers, resolveStyles(styles(tokens))];
+      // An additional level of cache based on tokens to avoid style computation for IE11
+
+      const path = [tokens, styles];
+      const resolvedStyles = graphGet(graph, path);
+
+      if (resolvedStyles) {
+        return [matchers, resolvedStyles];
+      }
+
+      const resolveStyles1 = resolveStyles(styles(tokens));
+      graphSet(graph, path, resolveStyles1);
+
+      return [matchers, resolveStyles1];
     }
 
     if (resolvedStyles) {
@@ -234,12 +279,12 @@ export function makeNonReactStyles(styles: any) {
 
     const matchedDefinitions = resolvedStyles.reduce((acc, definition) => {
       if (matchesSelectors(definition[0], selectors)) {
-        return Object.assign(acc, definition[1]);
+        acc.push(definition[1]);
       }
 
       return acc;
-    }, {});
-    const resultDefinitions = { ...matchedDefinitions, ...overrides };
+    }, []);
+    const resultDefinitions = Object.assign({}, ...matchedDefinitions, ...overrides);
 
     return nonMakeClasses.join(' ') + insertStyles(resultDefinitions, DEFINITION_CACHE, options.rtl, options.target);
   };
