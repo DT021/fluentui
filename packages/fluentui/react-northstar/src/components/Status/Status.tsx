@@ -68,6 +68,7 @@ const useStatusStyles = makeStyles([
 const staticStatusStyles = [
   [
     null,
+    null,
     {
       alignItems: [
         'a122n59',
@@ -83,61 +84,78 @@ const staticStatusStyles = [
       ],
       verticalAlign: ['amrv4ls', '.amrv4ls{vertical-align:middle;}'],
       borderRadius: ['a1chkv5c', '.a1chkv5c{border-radius:9999px;}'],
-      backgroundColor: ['a55zrps', '.a55zrps{background-color:var(--theme-colorScheme-default-background5);}'],
     },
   ],
   [
+    null,
+    tokens => ({ backgroundColor: tokens.colorScheme.default.background5 }),
+    { backgroundColor: ['a55zrps', '.a55zrps{background-color:var(--theme-colorScheme-default-background5);}'] },
+  ],
+
+  [
     { state: 'success' },
+    tokens => ({ backgroundColor: tokens.colorScheme.green.background }),
     { backgroundColor: ['a109hrsy', '.a109hrsy{background-color:var(--theme-colorScheme-green-background);}'] },
   ],
   [
     { state: 'info' },
+    tokens => ({ backgroundColor: tokens.colorScheme.brand.background }),
     { backgroundColor: ['a1qyxj3v', '.a1qyxj3v{background-color:var(--theme-colorScheme-brand-background);}'] },
   ],
   [
     { state: 'warning' },
+    tokens => ({ backgroundColor: tokens.colorScheme.yellow.background }),
     { backgroundColor: ['a1hm9uc3', '.a1hm9uc3{background-color:var(--theme-colorScheme-yellow-background);}'] },
   ],
   [
     { state: 'error' },
+    tokens => ({ backgroundColor: tokens.colorScheme.red.background }),
     { backgroundColor: ['ao0oefl', '.ao0oefl{background-color:var(--theme-colorScheme-red-background);}'] },
   ],
+
   [
     { size: 'smallest' },
+    null,
     { width: ['a1h7vuc3', '.a1h7vuc3{width:0.4286rem;}'], height: ['ac65nva', '.ac65nva{height:0.4286rem;}'] },
   ],
   [
     { size: 'smaller' },
+    null,
     { width: ['a17zuqj1', '.a17zuqj1{width:0.7143rem;}'], height: ['af2ublo', '.af2ublo{height:0.7143rem;}'] },
   ],
   [
     { size: 'small' },
+    null,
     { width: ['a17zuqj1', '.a17zuqj1{width:0.7143rem;}'], height: ['af2ublo', '.af2ublo{height:0.7143rem;}'] },
   ],
   [
     { size: 'medium' },
+    null,
     { width: ['a17zuqj1', '.a17zuqj1{width:0.7143rem;}'], height: ['af2ublo', '.af2ublo{height:0.7143rem;}'] },
   ],
   [
     { size: 'large' },
+    null,
     { width: ['a17zuqj1', '.a17zuqj1{width:0.7143rem;}'], height: ['af2ublo', '.af2ublo{height:0.7143rem;}'] },
   ],
   [
     { size: 'larger' },
+    null,
     { width: ['asxa7o6', '.asxa7o6{width:1.1429rem;}'], height: ['awdvutt', '.awdvutt{height:1.1429rem;}'] },
   ],
-  [{ size: 'largest' }, { width: ['a3tsq5r', '.a3tsq5r{width:0;}'], height: ['aniina8', '.aniina8{height:0;}'] }],
+  [{ size: 'largest' }, null, { width: ['a3tsq5r', '.a3tsq5r{width:0;}'], height: ['aniina8', '.aniina8{height:0;}'] }],
 ];
-staticStatusStyles.__PRIVATE_BUILD_DONE__ = true;
 const useStaticStatusStyles = makeStyles(staticStatusStyles);
 
 const useStatusIconStyles = makeStyles([
   [
     null,
-    {
+    tokens => ({
       alignItems: 'center',
       display: 'inline-flex',
       justifyContent: 'center',
+
+      color: tokens.colorScheme.default.foreground4,
 
       width: pxToRem(7),
       height: pxToRem(7),
@@ -151,9 +169,8 @@ const useStatusIconStyles = makeStyles([
           width: '100%',
         },
       },
-    },
+    }),
   ],
-  [null, tokens => ({ color: tokens.colorScheme.default.foreground4 })],
 
   [{ state: 'success' }, tokens => ({ color: tokens.colorScheme.green.foreground1 })],
   [{ state: 'info' }, tokens => ({ color: tokens.colorScheme.default.foreground2 })],
@@ -163,6 +180,7 @@ const useStatusIconStyles = makeStyles([
 
 const staticStatusIconStyles = [
   [
+    null,
     null,
     {
       alignItems: [
@@ -185,13 +203,33 @@ const staticStatusIconStyles = [
       ' > :first-child svgwidth': ['a101b0fn', '.a101b0fn>:first-child svg{width:100%;}'],
     },
   ],
-  [null, { color: ['afnwo96', '.afnwo96{color:var(--theme-colorScheme-default-foreground4);}'] }],
-  [{ state: 'success' }, { color: ['a1uyxhfx', '.a1uyxhfx{color:var(--theme-colorScheme-green-foreground1);}'] }],
-  [{ state: 'info' }, { color: ['a19vcx5o', '.a19vcx5o{color:var(--theme-colorScheme-default-foreground2);}'] }],
-  [{ state: 'warning' }, { color: ['a17vukj9', '.a17vukj9{color:var(--theme-colorScheme-yellow-foreground2);}'] }],
-  [{ state: 'error' }, { color: ['a1j0lmpl', '.a1j0lmpl{color:var(--theme-colorScheme-red-foreground2);}'] }],
+  [
+    null,
+    tokens => ({ color: tokens.colorScheme.default.foreground4 }),
+    { color: ['afnwo96', '.afnwo96{color:var(--theme-colorScheme-default-foreground4);}'] },
+  ],
+
+  [
+    { state: 'success' },
+    tokens => ({ color: tokens.colorScheme.green.foreground1 }),
+    { color: ['a1uyxhfx', '.a1uyxhfx{color:var(--theme-colorScheme-green-foreground1);}'] },
+  ],
+  [
+    { state: 'info' },
+    tokens => ({ color: tokens.colorScheme.default.foreground2 }),
+    { color: ['a19vcx5o', '.a19vcx5o{color:var(--theme-colorScheme-default-foreground2);}'] },
+  ],
+  [
+    { state: 'warning' },
+    tokens => ({ color: tokens.colorScheme.yellow.foreground2 }),
+    { color: ['a17vukj9', '.a17vukj9{color:var(--theme-colorScheme-yellow-foreground2);}'] },
+  ],
+  [
+    { state: 'error' },
+    tokens => ({ color: tokens.colorScheme.red.foreground2 }),
+    { color: ['a1j0lmpl', '.a1j0lmpl{color:var(--theme-colorScheme-red-foreground2);}'] },
+  ],
 ];
-staticStatusIconStyles.__PRIVATE_BUILD_DONE__ = true;
 const useStaticStatusIconStyles = makeStyles(staticStatusIconStyles);
 
 /**

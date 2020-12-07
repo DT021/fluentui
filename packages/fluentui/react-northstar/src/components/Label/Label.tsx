@@ -97,6 +97,7 @@ const useLabelStyles = makeStyles([
 const staticLabelStyles = [
   [
     null,
+    null,
     {
       alignItems: [
         'a122n59',
@@ -119,14 +120,21 @@ const staticLabelStyles = [
       paddingLeft: ['akptv0n', '.akptv0n{padding-left:0.2857rem;}', '.rakptv0n{padding-right:0.2857rem;}'],
     },
   ],
-  [{ hasImage: true }, { paddingRight: ['aifp7yv', '.aifp7yv{padding-right:0px;}', '.raifp7yv{padding-left:0px;}'] }],
+
+  [
+    { hasImage: true },
+    null,
+    { paddingRight: ['aifp7yv', '.aifp7yv{padding-right:0px;}', '.raifp7yv{padding-left:0px;}'] },
+  ],
+
   [
     { hasImage: true, imagePosition: 'start' },
+    null,
     { paddingLeft: ['a1asdtw4', '.a1asdtw4{padding-left:0px;}', '.ra1asdtw4{padding-right:0px;}'] },
   ],
-  [{ circular: true }, { borderRadius: ['a10yvfpk', '.a10yvfpk{border-radius:714.2143rem;}'] }],
+
+  [{ circular: true }, null, { borderRadius: ['a10yvfpk', '.a10yvfpk{border-radius:714.2143rem;}'] }],
 ];
-staticLabelStyles.__PRIVATE_BUILD_DONE__ = true;
 const useStaticLabelStyles = makeStyles(staticLabelStyles);
 
 const useLabelContentStyles = makeStyles([
@@ -137,14 +145,15 @@ const useLabelContentStyles = makeStyles([
 const staticLabelContentStyles = [
   [
     { hasStartElement: true },
+    null,
     { marginLeft: ['a1kdtsql', '.a1kdtsql{margin-left:0.2143rem;}', '.ra1kdtsql{margin-right:0.2143rem;}'] },
   ],
   [
     { hasEndElement: true },
+    null,
     { marginRight: ['ald2d31', '.ald2d31{margin-right:0.2143rem;}', '.rald2d31{margin-left:0.2143rem;}'] },
   ],
 ];
-staticLabelContentStyles.__PRIVATE_BUILD_DONE__ = true;
 const useStaticLabelContentStyles = makeStyles(staticLabelContentStyles);
 
 const useLabelIconStyles = makeStyles([
@@ -172,6 +181,7 @@ const useLabelIconStyles = makeStyles([
 const staticLabelIconStyles = [
   [
     null,
+    null,
     {
       alignItems: [
         'a122n59',
@@ -195,15 +205,18 @@ const staticLabelIconStyles = [
   ],
   [{ hasActionableIcon: true }, { cursor: ['a1k6fduh', '.a1k6fduh{cursor:pointer;}'] }],
 ];
-staticLabelIconStyles.__PRIVATE_BUILD_DONE__ = true;
+
 const useStaticLabelIconStyles = makeStyles(staticLabelIconStyles);
 
 const useLabelImageStyles = makeStyles([[null, { height: pxToRem(20), width: pxToRem(20) }]]);
 
 const staticLabelImageStyles = [
-  [null, { height: ['ah012zl', '.ah012zl{height:1.4286rem;}'], width: ['a19ec5sb', '.a19ec5sb{width:1.4286rem;}'] }],
+  [
+    null,
+    null,
+    { height: ['ah012zl', '.ah012zl{height:1.4286rem;}'], width: ['a19ec5sb', '.a19ec5sb{width:1.4286rem;}'] },
+  ],
 ];
-staticLabelImageStyles.__PRIVATE_BUILD_DONE__ = true;
 const useStaticLabelImageStyles = makeStyles(staticLabelImageStyles);
 
 /**

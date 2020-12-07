@@ -1,7 +1,7 @@
 import hashString from '@emotion/hash';
 // @ts-ignore
 import { useFluentContext } from '@fluentui/react-bindings';
-import * as CSS from 'csstype';
+import { Properties as CSSProperties } from 'csstype';
 // @ts-ignore
 import { expand } from 'inline-style-expand-shorthand';
 // @ts-ignore
@@ -11,6 +11,10 @@ import { convertProperty } from 'rtl-css-js/core';
 import { cssifyDeclaration } from './cssifyDeclaration';
 import { insertStyles } from './insertStyles';
 
+//
+//
+//
+
 function isObject(val: any) {
   return val != null && typeof val === 'object' && Array.isArray(val) === false;
 }
@@ -18,6 +22,8 @@ function isObject(val: any) {
 //
 //
 //
+
+const canUseCSSVariables = window.CSS && CSS.supports('color', 'var(--c)');
 
 //
 //
@@ -52,7 +58,7 @@ function normalizeNestedProperty(nestedProperty: string): string {
   return nestedProperty;
 }
 
-function createTokensProxy(tokens: any) {
+function createCSSVariablesProxy(tokens: any) {
   const g = {
     // @ts-ignore
     get(target: any, key: any) {
@@ -75,7 +81,7 @@ const HASH_PREFIX = 'a';
 
 function resolveStyles(styles: any[], selector = '', result: any = {}): any {
   const expandedStyles = expand(styles);
-  const properties = Object.keys(expandedStyles) as (keyof CSS.Properties)[];
+  const properties = Object.keys(expandedStyles) as (keyof CSSProperties)[];
 
   properties.forEach(propName => {
     const propValue = expandedStyles[propName];
@@ -153,12 +159,41 @@ function matchesSelectors(matcher: any, selectors: any): boolean {
   return matches;
 }
 
-function resolveStylesToClasses(styles: any[], tokens: any) {
-  return styles.map(definition => {
-    return [
-      definition[0],
-      resolveStyles(typeof definition[1] === 'function' ? definition[1](createTokensProxy(tokens)) : definition[1]),
-    ];
+function resolveStylesToClasses(definitions: any[], tokens: any) {
+  return definitions.map(definition => {
+    const matchers = definition[0];
+    const styles = definition[1];
+    const resolvedStyles = definition[2];
+
+    const areTokenDependantStyles = typeof styles === 'function';
+    console.log('A', canUseCSSVariables, resolvedStyles, tokens);
+    if (canUseCSSVariables) {
+      // we can always use prebuilt styles in this case and static cache in runtime
+
+      if (resolvedStyles) {
+        return [matchers, resolvedStyles];
+      }
+
+      // if static cache is not present, eval it and mutate original object
+
+      definition[2] = resolveStyles(areTokenDependantStyles ? styles(tokens) : styles);
+
+      return [matchers, definition[2]];
+    }
+
+    // if CSS variables are not supported we have to re-eval only functions, otherwise static cache can be reused
+
+    if (areTokenDependantStyles) {
+      return [matchers, resolveStyles(styles(tokens))];
+    }
+
+    if (resolvedStyles) {
+      return [matchers, resolvedStyles];
+    }
+
+    definition[2] = resolveStyles(styles);
+
+    return [matchers, definition[2]];
   });
 }
 
@@ -170,17 +205,12 @@ const DEFINITION_CACHE: Record<string, [string, string]> = {};
  */
 export function makeNonReactStyles(styles: any) {
   return function ___(selectors: any, options: any, ...classNames: (string | undefined)[]): string {
-    const resolvedStyles = styles.__PRIVATE_BUILD_DONE__ ? styles : resolveStylesToClasses(styles, options.tokens);
-
-    // if (!styles.__PRIVATE_BUILD_DONE__) {
-    //   console.log('Runtime transform was done', ...classNames, JSON.stringify(resolvedStyles));
-    // }
+    // If CSS variables are present we can use CSS variables proxy like in build time
+    const tokens = canUseCSSVariables ? createCSSVariablesProxy(options.tokens) : options.tokens;
+    const resolvedStyles = resolveStylesToClasses(styles, tokens);
 
     const nonMakeClasses: string[] = [];
     const overrides: any = {};
-
-    // overrides?.__styles ? styles.concat(overrides?.__styles) : styles,
-    // tokens,
 
     classNames.forEach(className => {
       if (typeof className === 'string') {

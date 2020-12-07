@@ -43,6 +43,7 @@ const useAvatarStyles = makeStyles([
 const staticAvatarStyles = [
   [
     null,
+    null,
     {
       backgroundColor: ['a1u2r49w', '.a1u2r49w{background-color:inherit;}'],
       display: ['a14t3ns0', '.a14t3ns0{display:inline-block;}'],
@@ -52,43 +53,53 @@ const staticAvatarStyles = [
   ],
   [
     { size: 'smallest' },
+    null,
     { height: ['ah012zl', '.ah012zl{height:1.4286rem;}'], width: ['a19ec5sb', '.a19ec5sb{width:1.4286rem;}'] },
   ],
   [
     { size: 'smaller' },
+    null,
     { height: ['avq1clm', '.avq1clm{height:1.7143rem;}'], width: ['a1kgoap5', '.a1kgoap5{width:1.7143rem;}'] },
   ],
   [
     { size: 'small' },
+    null,
     { height: ['a1xpi36y', '.a1xpi36y{height:2rem;}'], width: ['a137enl0', '.a137enl0{width:2rem;}'] },
   ],
   [
     { size: 'medium' },
+    null,
     { height: ['as51yi9', '.as51yi9{height:2.2857rem;}'], width: ['a10vq2gu', '.a10vq2gu{width:2.2857rem;}'] },
   ],
   [
     { size: 'large' },
+    null,
     { height: ['avonqzr', '.avonqzr{height:3.1429rem;}'], width: ['aexyc64', '.aexyc64{width:3.1429rem;}'] },
   ],
   [
     { size: 'larger' },
+    null,
     { height: ['amsujci', '.amsujci{height:4.5714rem;}'], width: ['aoni65q', '.aoni65q{width:4.5714rem;}'] },
   ],
   [
     { size: 'largest' },
+    null,
     { height: ['a4c4g8p', '.a4c4g8p{height:6.8571rem;}'], width: ['a1uudkc', '.a1uudkc{width:6.8571rem;}'] },
   ],
 ];
-staticAvatarStyles.__PRIVATE_BUILD_DONE__ = true;
+
 const useStaticAvatarStyles = makeStyles(staticAvatarStyles);
 
 const useAvatarIconStyles = makeStyles([
   [
     null,
-    {
+    tokens => ({
       alignItems: 'center',
       borderRadius: '50%',
       display: 'inline-flex',
+
+      backgroundColor: tokens.colors.brand[600],
+      color: tokens.colors.white,
 
       '& > :first-child': {
         margin: '0 auto',
@@ -98,9 +109,8 @@ const useAvatarIconStyles = makeStyles([
           height: '100%',
         },
       },
-    },
+    }),
   ],
-  [null, tokens => ({ color: tokens.colors.white, background: tokens.colors.brand[600] })],
 
   [{ square: true }, { borderRadius: pxToRem(3) }],
 
@@ -137,6 +147,7 @@ const useAvatarIconStyles = makeStyles([
 const staticAvatarIconStyles = [
   [
     null,
+    null,
     {
       alignItems: [
         'a122n59',
@@ -163,16 +174,21 @@ const staticAvatarIconStyles = [
       ],
     },
   ],
+
   [
     null,
+    tokens => ({ color: tokens.colors.white, background: tokens.colors.brand[600] }),
     {
       color: ['aptray4', '.aptray4{color:var(--theme-colors-white);}'],
       background: ['a68jo5u', '.a68jo5u{background:var(--theme-colors-brand-600);}'],
     },
   ],
-  [{ square: true }, { borderRadius: ['a1dms8l0', '.a1dms8l0{border-radius:0.2143rem;}'] }],
+
+  [{ square: true }, null, { borderRadius: ['a1dms8l0', '.a1dms8l0{border-radius:0.2143rem;}'] }],
+
   [
     { size: 'smallest' },
+    null,
     {
       height: ['ah012zl', '.ah012zl{height:1.4286rem;}'],
       width: ['a19ec5sb', '.a19ec5sb{width:1.4286rem;}'],
@@ -182,6 +198,7 @@ const staticAvatarIconStyles = [
   ],
   [
     { size: 'smaller' },
+    null,
     {
       height: ['avq1clm', '.avq1clm{height:1.7143rem;}'],
       width: ['a1kgoap5', '.a1kgoap5{width:1.7143rem;}'],
@@ -191,6 +208,7 @@ const staticAvatarIconStyles = [
   ],
   [
     { size: 'small' },
+    null,
     {
       height: ['a1xpi36y', '.a1xpi36y{height:2rem;}'],
       width: ['a137enl0', '.a137enl0{width:2rem;}'],
@@ -200,6 +218,7 @@ const staticAvatarIconStyles = [
   ],
   [
     { size: 'medium' },
+    null,
     {
       height: ['as51yi9', '.as51yi9{height:2.2857rem;}'],
       width: ['a10vq2gu', '.a10vq2gu{width:2.2857rem;}'],
@@ -209,6 +228,7 @@ const staticAvatarIconStyles = [
   ],
   [
     { size: 'large' },
+    null,
     {
       height: ['avonqzr', '.avonqzr{height:3.1429rem;}'],
       width: ['aexyc64', '.aexyc64{width:3.1429rem;}'],
@@ -218,6 +238,7 @@ const staticAvatarIconStyles = [
   ],
   [
     { size: 'larger' },
+    null,
     {
       height: ['amsujci', '.amsujci{height:4.5714rem;}'],
       width: ['aoni65q', '.aoni65q{width:4.5714rem;}'],
@@ -227,6 +248,7 @@ const staticAvatarIconStyles = [
   ],
   [
     { size: 'largest' },
+    null,
     {
       height: ['a4c4g8p', '.a4c4g8p{height:6.8571rem;}'],
       width: ['a1uudkc', '.a1uudkc{width:6.8571rem;}'],
@@ -235,7 +257,6 @@ const staticAvatarIconStyles = [
     },
   ],
 ];
-staticAvatarIconStyles.__PRIVATE_BUILD_DONE__ = true;
 const useStaticAvatarIconStyles = makeStyles(staticAvatarIconStyles);
 
 const useAvatarImageStyles = makeStyles([
@@ -254,6 +275,7 @@ const useAvatarImageStyles = makeStyles([
 const staticAvatarImageStyles = [
   [
     null,
+    null,
     {
       height: ['a1l02sjl', '.a1l02sjl{height:100%;}'],
       objectFit: ['a1ps3kmd', '.a1ps3kmd{object-fit:cover;}'],
@@ -261,9 +283,8 @@ const staticAvatarImageStyles = [
       width: ['aly5x3f', '.aly5x3f{width:100%;}'],
     },
   ],
-  [{ square: true }, { borderRadius: ['a1dms8l0', '.a1dms8l0{border-radius:0.2143rem;}'] }],
+  [{ square: true }, null, { borderRadius: ['a1dms8l0', '.a1dms8l0{border-radius:0.2143rem;}'] }],
 ];
-staticAvatarImageStyles.__PRIVATE_BUILD_DONE__ = true;
 const useStaticAvatarImageStyles = makeStyles(staticAvatarImageStyles);
 
 const useAvatarLabelStyles = makeStyles([
@@ -312,6 +333,7 @@ const useAvatarLabelStyles = makeStyles([
 const staticLabelStyles = [
   [
     null,
+    null,
     {
       display: ['a14t3ns0', '.a14t3ns0{display:inline-block;}'],
       textAlign: ['a17mccla', '.a17mccla{text-align:center;}'],
@@ -322,9 +344,10 @@ const staticLabelStyles = [
       paddingLeft: ['a1cnd47f', '.a1cnd47f{padding-left:0;}', '.ra1cnd47f{padding-right:0;}'],
     },
   ],
-  [{ square: true }, { borderRadius: ['a1dms8l0', '.a1dms8l0{border-radius:0.2143rem;}'] }],
+  [{ square: true }, null, { borderRadius: ['a1dms8l0', '.a1dms8l0{border-radius:0.2143rem;}'] }],
   [
     { size: 'smallest' },
+    null,
     {
       fontSize: ['a1n3tkqd', '.a1n3tkqd{font-size:0.6123rem;}'],
       lineHeight: ['aqn99f', '.aqn99f{line-height:1.4286rem;}'],
@@ -334,6 +357,7 @@ const staticLabelStyles = [
   ],
   [
     { size: 'smaller' },
+    null,
     {
       fontSize: ['a5uuiz6', '.a5uuiz6{font-size:0.7348rem;}'],
       lineHeight: ['a1ldra9i', '.a1ldra9i{line-height:1.7143rem;}'],
@@ -343,6 +367,7 @@ const staticLabelStyles = [
   ],
   [
     { size: 'small' },
+    null,
     {
       fontSize: ['a140ezmv', '.a140ezmv{font-size:0.8573rem;}'],
       lineHeight: ['a15qi916', '.a15qi916{line-height:2rem;}'],
@@ -352,6 +377,7 @@ const staticLabelStyles = [
   ],
   [
     { size: 'medium' },
+    null,
     {
       fontSize: ['a880ecx', '.a880ecx{font-size:0.9797rem;}'],
       lineHeight: ['a1ppau6d', '.a1ppau6d{line-height:2.2857rem;}'],
@@ -361,6 +387,7 @@ const staticLabelStyles = [
   ],
   [
     { size: 'large' },
+    null,
     {
       fontSize: ['ab33vjb', '.ab33vjb{font-size:1.3471rem;}'],
       lineHeight: ['a7itntz', '.a7itntz{line-height:3.1429rem;}'],
@@ -370,6 +397,7 @@ const staticLabelStyles = [
   ],
   [
     { size: 'larger' },
+    null,
     {
       fontSize: ['ajt7aj5', '.ajt7aj5{font-size:1.9595rem;}'],
       lineHeight: ['a1oeme7e', '.a1oeme7e{line-height:4.5714rem;}'],
@@ -379,6 +407,7 @@ const staticLabelStyles = [
   ],
   [
     { size: 'largest' },
+    null,
     {
       fontSize: ['ag7k9p2', '.ag7k9p2{font-size:2.9392rem;}'],
       lineHeight: ['a11fhega', '.a11fhega{line-height:6.8571rem;}'],
@@ -387,7 +416,6 @@ const staticLabelStyles = [
     },
   ],
 ];
-staticLabelStyles.__PRIVATE_BUILD_DONE__ = true;
 const useStaticAvatarLabelStyles = makeStyles(staticLabelStyles);
 
 const useAvatarStatusStyles = makeStyles([
@@ -405,15 +433,20 @@ const useAvatarStatusStyles = makeStyles([
 const staticAvatarStatusStyles = [
   [
     null,
+    null,
     {
       position: ['a1euv43f', '.a1euv43f{position:absolute;}'],
       bottom: ['a1yab3r1', '.a1yab3r1{bottom:0;}'],
       right: ['a1e31b4d', '.a1e31b4d{right:0;}', '.ra1e31b4d{left:0;}'],
-      boxShadow: ['a1e58ze0', '.a1e58ze0{box-shadow:0 0 0 2px var(--theme-bodyBackground);}'],
     },
   ],
+  [
+    null,
+    tokens => ({ boxShadow: `0 0 0 2px ${tokens.bodyBackground}` }),
+    { boxShadow: ['a1e58ze0', '.a1e58ze0{box-shadow:0 0 0 2px var(--theme-bodyBackground);}'] },
+  ],
 ];
-staticAvatarStatusStyles.__PRIVATE_BUILD_DONE__ = true;
+
 const useStaticAvatarStatusStyles = makeStyles(staticAvatarStatusStyles);
 
 export interface AvatarProps extends UIComponentProps {

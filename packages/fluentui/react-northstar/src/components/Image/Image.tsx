@@ -56,6 +56,31 @@ const useImageStyles = makeStyles([
   [{ fluid: true }, { width: '100%' }],
 ]);
 
+const staticImageStyles = [
+  [
+    null,
+    null,
+    {
+      boxSizing: ['a1ewtqcl', '.a1ewtqcl{box-sizing:border-box;}'],
+      display: ['a14t3ns0', '.a14t3ns0{display:inline-block;}'],
+      height: ['a11ysow2', '.a11ysow2{height:auto;}'],
+      verticalAlign: ['amrv4ls', '.amrv4ls{vertical-align:middle;}'],
+    },
+  ],
+
+  [
+    { avatar: true },
+    null,
+    {
+      borderRadius: ['a10yvfpk', '.a10yvfpk{border-radius:714.2143rem;}'],
+      width: ['a10vq2gu', '.a10vq2gu{width:2.2857rem;}'],
+    },
+  ],
+  [{ circular: true }, null, { borderRadius: ['a10yvfpk', '.a10yvfpk{border-radius:714.2143rem;}'] }],
+  [{ fluid: true }, null, { width: ['aly5x3f', '.aly5x3f{width:100%;}'] }],
+];
+const useStaticImageStyles = makeStyles(staticImageStyles);
+
 /**
  * An Image is a graphic representation of something.
  *
@@ -82,7 +107,7 @@ export const Image: ComponentWithAs<'img', ImageProps> & FluentComponentStaticPr
     }),
     rtl: context.rtl,
   });
-  const rootClassName = useImageStyles({ avatar, circular, fluid }, imageClassName, className);
+  const rootClassName = useStaticImageStyles({ avatar, circular, fluid }, imageClassName, className);
 
   const ElementType = getElementType(props);
   const unhandledProps = useUnhandledProps(Image.handledProps, props);
