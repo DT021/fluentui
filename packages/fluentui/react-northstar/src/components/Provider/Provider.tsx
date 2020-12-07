@@ -33,6 +33,7 @@ import { ChildrenComponentProps, setUpWhatInput, tryCleanupWhatInput, UIComponen
 import { mergeProviderContexts } from '../../utils/mergeProviderContexts';
 import { ProviderConsumer } from './ProviderConsumer';
 import { usePortalBox, PortalBoxContext } from './usePortalBox';
+import { createTarget } from '@fluentui/react-theme-provider';
 
 export interface ProviderProps extends ChildrenComponentProps, UIComponentProps {
   rtl?: boolean;
@@ -200,6 +201,8 @@ export const Provider: ComponentWithAs<'div', ProviderProps> & {
       outgoingContext.renderer.unregisterUsage();
     };
   }, []);
+
+  outgoingContext.targetForMakeStyles = createTarget(outgoingContext.target);
 
   // do not spread anything - React.Fragment can only have `key` and `children` props
   const elementProps =

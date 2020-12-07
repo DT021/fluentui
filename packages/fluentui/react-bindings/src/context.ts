@@ -1,5 +1,6 @@
 import { noopRenderer, Renderer } from '@fluentui/react-northstar-styles-renderer';
 import { emptyTheme, ThemeInput, ThemePrepared } from '@fluentui/styles';
+import { makeNonReactStyles } from '@fluentui/react-theme-provider';
 import * as React from 'react';
 
 import { Telemetry } from './telemetry/types';
@@ -59,3 +60,16 @@ export function useFluentContext(): ProviderContextPrepared {
 }
 
 export const Unstable_FluentContextProvider = FluentContext.Provider;
+
+/*
+ * A wrapper to connect to a React context. SHOULD USE unified context!!!
+ */
+export function makeStyles(styles: any) {
+  const result = makeNonReactStyles(styles);
+
+  return function ___(selectors: any = {}, ...classNames: string[]): string {
+    const { rtl, theme, targetForMakeStyles } = React.useContext(FluentContext);
+
+    return result(selectors, { rtl, tokens: theme.siteVariables, target: targetForMakeStyles }, ...classNames);
+  };
+}

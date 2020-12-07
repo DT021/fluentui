@@ -2,13 +2,13 @@ import { Accessibility, statusBehavior, StatusBehaviorProps } from '@fluentui/ac
 import {
   ComponentWithAs,
   getElementType,
+  makeStyles,
   useUnhandledProps,
   useAccessibility,
   useTelemetry,
   useFluentContext,
 } from '@fluentui/react-bindings';
 import * as customPropTypes from '@fluentui/react-proptypes';
-import { makeStyles } from '@fluentui/react-theme-provider';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 

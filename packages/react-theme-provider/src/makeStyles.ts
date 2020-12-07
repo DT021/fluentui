@@ -1,6 +1,4 @@
 import hashString from '@emotion/hash';
-// @ts-ignore
-import { useFluentContext } from '@fluentui/react-bindings';
 import { Properties as CSSProperties } from 'csstype';
 // @ts-ignore
 import { expand } from 'inline-style-expand-shorthand';
@@ -10,6 +8,32 @@ import { convertProperty } from 'rtl-css-js/core';
 
 import { cssifyDeclaration } from './cssifyDeclaration';
 import { insertStyles } from './insertStyles';
+
+//
+//
+//
+
+export type RenderTarget = { cache: Record<string, [string, string]>; node: HTMLStyleElement; index: number };
+const targets = new WeakMap<Document, RenderTarget>();
+
+export function createTarget(targetDocument: Document): RenderTarget {
+  let target = targets.get(targetDocument);
+
+  if (target) {
+    return target;
+  }
+
+  const node = targetDocument.createElement('style');
+
+  node.setAttribute('FCSS', 'RULE');
+  targetDocument.head.appendChild(node);
+
+  target = { cache: {}, node, index: 0 };
+
+  targets.set(targetDocument, target);
+
+  return target;
+}
 
 //
 //
@@ -171,22 +195,25 @@ function resolveStyles(styles: any[], selector = '', result: any = {}): any {
   return result;
 }
 
-function matchesSelectors(matcher: any, selectors: any): boolean {
+function matchesSelectors(matchers: any, selectors: any): boolean {
+  if (matchers === null) {
+    return true;
+  }
+
   let matches = true;
 
-  if (isObject(matcher)) {
-    Object.keys(matcher).forEach(matcherName => {
-      const matcherValue = matcher[matcherName];
-      const matchesSelector =
-        matcherValue == selectors[matcherName] ||
-        // https://stackoverflow.com/a/19277873/6488546
-        // find less tricky way
-        (matcherValue === false && selectors[matcherName] == null);
+  for (const matcherName in matchers) {
+    const matcherValue = matchers[matcherName];
+    const matchesSelector =
+      matcherValue == selectors[matcherName] ||
+      // https://stackoverflow.com/a/19277873/6488546
+      // find less tricky way
+      (matcherValue === false && selectors[matcherName] == null);
 
-      if (!matchesSelector) {
-        matches = false;
-      }
-    });
+    if (!matchesSelector) {
+      matches = false;
+      break;
+    }
   }
 
   return matches;
@@ -242,8 +269,6 @@ function resolveStylesToClasses(definitions: any[], tokens: any) {
   });
 }
 
-const DEFINITION_CACHE: Record<string, [string, string]> = {};
-
 /**
  * TODO: Update it with something proper...
  * CAN WORK WITHOUT REACT!
@@ -260,8 +285,8 @@ export function makeNonReactStyles(styles: any) {
     classNames.forEach(className => {
       if (typeof className === 'string') {
         className.split(' ').forEach(className => {
-          if (DEFINITION_CACHE[className] !== undefined) {
-            overrides[DEFINITION_CACHE[className][0]] = DEFINITION_CACHE[className][1];
+          if (options.target.cache[className] !== undefined) {
+            overrides[options.target.cache[className][0]] = options.target.cache[className][1];
           } else {
             nonMakeClasses.push(className);
           }
@@ -286,9 +311,11 @@ export function makeNonReactStyles(styles: any) {
     }, []);
     const resultDefinitions = Object.assign({}, ...matchedDefinitions, ...overrides);
 
-    return nonMakeClasses.join(' ') + insertStyles(resultDefinitions, DEFINITION_CACHE, options.rtl, options.target);
+    return nonMakeClasses.join(' ') + insertStyles(resultDefinitions, options.rtl, options.target);
   };
 }
+
+const defaultTarget = createTarget(document);
 
 /*
  * A wrapper to connect to a React context. SHOULD USE unified context!!!
@@ -297,8 +324,6 @@ export function makeStyles(styles: any) {
   const result = makeNonReactStyles(styles);
 
   return function ___(selectors: any = {}, ...classNames: string[]): string {
-    const { rtl, theme, target } = useFluentContext();
-
-    return result(selectors, { rtl, tokens: theme.siteVariables, target }, ...classNames);
+    return result(selectors, { rtl: false, tokens: {}, target: defaultTarget }, ...classNames);
   };
 }

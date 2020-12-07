@@ -2,14 +2,13 @@ import { Accessibility } from '@fluentui/accessibility';
 import {
   ComponentWithAs,
   getElementType,
+  makeStyles,
   useUnhandledProps,
   useAccessibility,
   useFluentContext,
-  useStyles,
   useTelemetry,
 } from '@fluentui/react-bindings';
 import * as customPropTypes from '@fluentui/react-proptypes';
-import { makeStyles } from '@fluentui/react-theme-provider';
 import * as _ from 'lodash';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';

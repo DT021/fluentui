@@ -2,12 +2,12 @@ import { Accessibility, AccessibilityAttributes, imageBehavior, ImageBehaviorPro
 import {
   ComponentWithAs,
   getElementType,
+  makeStyles,
   useUnhandledProps,
   useAccessibility,
   useFluentContext,
   useTelemetry,
 } from '@fluentui/react-bindings';
-import { makeStyles } from '@fluentui/react-theme-provider';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 

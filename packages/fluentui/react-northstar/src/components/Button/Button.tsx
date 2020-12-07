@@ -3,6 +3,7 @@ import {
   compose,
   ComponentWithAs,
   getElementType,
+  makeStyles,
   useAccessibility,
   useFluentContext,
   useStyles,
@@ -10,7 +11,6 @@ import {
   useUnhandledProps,
   ShorthandConfig,
 } from '@fluentui/react-bindings';
-import { makeStyles } from '@fluentui/react-theme-provider';
 import * as customPropTypes from '@fluentui/react-proptypes';
 import * as _ from 'lodash';
 import * as PropTypes from 'prop-types';
