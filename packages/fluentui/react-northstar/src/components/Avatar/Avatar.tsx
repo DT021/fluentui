@@ -498,11 +498,11 @@ export const Avatar: ComponentWithAs<'div', AvatarProps> & FluentComponentStatic
     rtl: context.rtl,
   });
 
-  const rootClassName = useStaticAvatarStyles({ size }, avatarClassName, className);
-  const iconClassName = useStaticAvatarIconStyles({ square, size });
-  const imageClassName = useStaticAvatarImageStyles({ square });
-  const labelClassName = useStaticAvatarLabelStyles({ square, size });
-  const statusClassName = useStaticAvatarStatusStyles();
+  const rootClassName = useAvatarStyles({ size }, avatarClassName, className);
+  const iconClassName = useAvatarIconStyles({ square, size });
+  const imageClassName = useAvatarImageStyles({ square });
+  const labelClassName = useAvatarLabelStyles({ square, size });
+  const statusClassName = useAvatarStatusStyles();
 
   const ElementType = getElementType(props);
   const unhandledProps = useUnhandledProps(Avatar.handledProps, props);

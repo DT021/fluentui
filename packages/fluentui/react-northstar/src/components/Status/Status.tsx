@@ -245,8 +245,8 @@ export const Status: ComponentWithAs<'span', StatusProps> & FluentComponentStati
 
   const { className, icon, size, state } = props;
 
-  const rootClassName = useStaticStatusStyles({ size, state }, statusClassName, className);
-  const iconClassName = useStaticStatusIconStyles({ size, state });
+  const rootClassName = useStatusStyles({ size, state }, statusClassName, className);
+  const iconClassName = useStatusIconStyles({ size, state });
 
   const getA11Props = useAccessibility(props.accessibility, {
     debugName: Status.displayName,

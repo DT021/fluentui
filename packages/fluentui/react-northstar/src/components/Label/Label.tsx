@@ -248,13 +248,13 @@ export const Label: ComponentWithAs<'span', LabelProps> & FluentComponentStaticP
   const hasImage = !!image;
   const hasIcon = !!icon;
 
-  const rootClassName = useStaticLabelStyles({ color, hasImage, circular, imagePosition }, labelClassName, className);
-  const contentClassName = useStaticLabelContentStyles({
+  const rootClassName = useLabelStyles({ color, hasImage, circular, imagePosition }, labelClassName, className);
+  const contentClassName = useLabelContentStyles({
     hasStartElement: (hasImage && imagePosition === 'start') || (hasIcon && iconPosition === 'start'),
     hasEndElement: (hasImage && imagePosition === 'end') || (hasIcon && iconPosition === 'end'),
   });
-  const iconClassName = useStaticLabelIconStyles({ hasActionableIcon: _.has(icon, 'onClick') });
-  const imageClassName = useStaticLabelImageStyles();
+  const iconClassName = useLabelIconStyles({ hasActionableIcon: _.has(icon, 'onClick') });
+  const imageClassName = useLabelImageStyles();
 
   const ElementType = getElementType(props);
   const unhandledProps = useUnhandledProps(Label.handledProps, props);

@@ -107,7 +107,7 @@ export const Image: ComponentWithAs<'img', ImageProps> & FluentComponentStaticPr
     }),
     rtl: context.rtl,
   });
-  const rootClassName = useStaticImageStyles({ avatar, circular, fluid }, imageClassName, className);
+  const rootClassName = useImageStyles({ avatar, circular, fluid }, imageClassName, className);
 
   const ElementType = getElementType(props);
   const unhandledProps = useUnhandledProps(Image.handledProps, props);

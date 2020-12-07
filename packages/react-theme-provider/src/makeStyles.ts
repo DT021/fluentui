@@ -166,7 +166,7 @@ function resolveStylesToClasses(definitions: any[], tokens: any) {
     const resolvedStyles = definition[2];
 
     const areTokenDependantStyles = typeof styles === 'function';
-    console.log('A', canUseCSSVariables, resolvedStyles, tokens);
+
     if (canUseCSSVariables) {
       // we can always use prebuilt styles in this case and static cache in runtime
 
