@@ -1,6 +1,6 @@
-import { RenderTarget } from './makeStyles';
+import { Renderer } from './makeStyles';
 
-export function insertStyles(definitions: any, rtl: boolean, target: RenderTarget): string {
+export function insertStyles(definitions: any, rtl: boolean, target: Renderer): string {
   let classes = '';
 
   for (const propName in definitions) {

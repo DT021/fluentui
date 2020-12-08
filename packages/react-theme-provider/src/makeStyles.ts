@@ -13,10 +13,14 @@ import { insertStyles } from './insertStyles';
 //
 //
 
-export type RenderTarget = { cache: Record<string, [string, string]>; node: HTMLStyleElement; index: number };
-const targets = new WeakMap<Document, RenderTarget>();
+export type Renderer = {
+  cache: Record<string, [string, string]>;
+  node: HTMLStyleElement;
+  index: number;
+};
+const targets = new WeakMap<Document, Renderer>();
 
-export function createTarget(targetDocument: Document): RenderTarget {
+export function createTarget(targetDocument: Document): Renderer {
   let target = targets.get(targetDocument);
 
   if (target) {
