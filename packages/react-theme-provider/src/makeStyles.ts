@@ -199,32 +199,52 @@ function resolveStyles(styles: any[], selector = '', result: any = {}): any {
   return result;
 }
 
-function matchesSelectors(matchers: any, selectors: any): boolean {
+function strinfigyMatcher(matcherName: any, matcherValue: any): string {
+  return matcherName + '' + (matcherValue == null ? false : matcherValue);
+}
+
+function matchersToBits(definitions: any, matchers: any) {
+  if (!definitions.mapping) {
+    let i = 0;
+    definitions.mapping = {};
+    definitions.forEach((definition: any) => {
+      const matchers = definition[0];
+
+      if (matchers === null) {
+        return null;
+      }
+
+      Object.keys(matchers).forEach(matcherName => {
+        const maskKey = strinfigyMatcher(matcherName, matchers[matcherName]);
+
+        definitions.mapping[maskKey] = 1 << i;
+        i++;
+      });
+    }, {});
+  }
+
   if (matchers === null) {
-    return true;
+    return 0;
   }
 
-  let matches = true;
+  return selectorsToBits(definitions.mapping, matchers);
+}
 
-  for (const matcherName in matchers) {
-    const matcherValue = matchers[matcherName];
-    const matchesSelector =
-      matcherValue == selectors[matcherName] ||
-      // https://stackoverflow.com/a/19277873/6488546
-      // find less tricky way
-      (matcherValue === false && selectors[matcherName] == null);
+function selectorsToBits(mapping: any, selectors: any): number {
+  let mask = 0;
 
-    if (!matchesSelector) {
-      matches = false;
-      break;
-    }
+  for (const selectorName in selectors) {
+    const selectorValue = selectors[selectorName];
+    const selectorInBits = mapping[selectorName + '' + (selectorValue == null ? false : selectorValue)];
+
+    mask += selectorInBits || 0; // can be undefined
   }
 
-  return matches;
+  return mask;
 }
 
 function resolveStylesToClasses(definitions: any[], tokens: any) {
-  return definitions.map(definition => {
+  const resolvedStyles = definitions.map((definition, i) => {
     const matchers = definition[0];
     const styles = definition[1];
     const resolvedStyles = definition[2];
@@ -235,18 +255,19 @@ function resolveStylesToClasses(definitions: any[], tokens: any) {
       // we can always use prebuilt styles in this case and static cache in runtime
 
       if (resolvedStyles) {
-        return [matchers, resolvedStyles];
+        return [matchers, null, resolvedStyles];
       }
 
+      // matchers should be also converted to bit masks
+      definitions[i][0] = matchersToBits(definitions, matchers);
+
       // if static cache is not present, eval it and mutate original object
+      definitions[i][2] = resolveStyles(areTokenDependantStyles ? styles(tokens) : styles);
 
-      definition[2] = resolveStyles(areTokenDependantStyles ? styles(tokens) : styles);
-
-      return [matchers, definition[2]];
+      return [definition[0], null, definition[2]];
     }
 
     // if CSS variables are not supported we have to re-eval only functions, otherwise static cache can be reused
-
     if (areTokenDependantStyles) {
       // An additional level of cache based on tokens to avoid style computation for IE11
 
@@ -257,20 +278,30 @@ function resolveStylesToClasses(definitions: any[], tokens: any) {
         return [matchers, resolvedStyles];
       }
 
+      // matchers should be also converted to bit masks
+      definitions[i][0] = matchersToBits(definitions, matchers);
+
       const resolveStyles1 = resolveStyles(styles(tokens));
       graphSet(graph, path, resolveStyles1);
 
-      return [matchers, resolveStyles1];
+      return [definitions[i][0], null, resolveStyles1];
     }
 
     if (resolvedStyles) {
-      return [matchers, resolvedStyles];
+      return [definitions[i][0], null, resolvedStyles];
     }
 
-    definition[2] = resolveStyles(styles);
+    // matchers should be also converted to bit masks
+    definitions[i][0] = matchersToBits(definitions, matchers);
+    definitions[i][2] = resolveStyles(styles);
 
-    return [matchers, definition[2]];
+    return [definitions[i][0], null, definition[2]];
   });
+
+  // @ts-ignore
+  resolvedStyles.mapping = definitions.mapping;
+
+  return resolvedStyles;
 }
 
 /**
@@ -278,44 +309,72 @@ function resolveStylesToClasses(definitions: any[], tokens: any) {
  * CAN WORK WITHOUT REACT!
  */
 export function makeNonReactStyles(styles: any) {
+  const cxCache: Record<string, string> = {};
+
   return function ___(selectors: any, options: any, ...classNames: (string | undefined)[]): string {
     // If CSS variables are present we can use CSS variables proxy like in build time
-    const tokens = canUseCSSVariables ? createCSSVariablesProxy(options.tokens) : options.tokens;
-    const resolvedStyles = resolveStylesToClasses(styles, tokens);
 
-    const nonMakeClasses: string[] = [];
+    let tokens;
+    let resolvedStyles;
+
+    if (process.env.NODE_ENV === 'production') {
+      tokens = canUseCSSVariables ? null : options.tokens;
+      resolvedStyles = canUseCSSVariables ? styles : resolveStylesToClasses(styles, tokens);
+    } else {
+      tokens = canUseCSSVariables ? createCSSVariablesProxy(options.tokens) : options.tokens;
+      resolvedStyles = resolveStylesToClasses(styles, tokens);
+    }
+
+    // Dumper for static styles
+    // @ts-ignore
+    // console.log(JSON.stringify(resolvedStyles.map(d => [d[0], null, d[1]])));
+    // @ts-ignore
+    // console.log(JSON.stringify(resolvedStyles.mapping));
+
+    let nonMakeClasses: string = '';
     const overrides: any = {};
+    let overridesCx = '';
 
     classNames.forEach(className => {
       if (typeof className === 'string') {
-        className.split(' ').forEach(className => {
-          if (options.target.cache[className] !== undefined) {
-            overrides[options.target.cache[className][0]] = options.target.cache[className][1];
+        className.split(' ').forEach(cName => {
+          if (options.target.cache[cName] !== undefined) {
+            overrides[options.target.cache[cName][0]] = options.target.cache[cName][1];
+            overridesCx += cName;
           } else {
-            nonMakeClasses.push(className);
+            nonMakeClasses += cName;
           }
         });
       }
     });
 
-    // console.log('classNames', classNames);
-    // console.log('overrides', overrides);
-    // console.log('resolvedClasses', resolvedClasses);
+    // @ts-ignore
+    const selectorsMask = selectorsToBits(resolvedStyles.mapping, selectors);
 
-    // console.log(classNames, resolvedClasses, overrides);
+    const overridesHash = overridesCx === '' ? '' : overridesCx;
+    const cxCacheKey = selectorsMask + '' + overridesHash;
 
-    // TODO: make me faster???
+    if (canUseCSSVariables && cxCache[cxCacheKey] !== undefined) {
+      // OOPS, Does not support MW
+      return nonMakeClasses + cxCache[cxCacheKey];
+    }
 
-    const matchedDefinitions = resolvedStyles.reduce((acc, definition) => {
-      if (matchesSelectors(definition[0], selectors)) {
-        acc.push(definition[1]);
+    const matchedDefinitions = resolvedStyles.reduce((acc: any, definition: any) => {
+      const matchersInBits = definition[0];
+
+      if (matchersInBits === 0 || !!(matchersInBits & selectorsMask)) {
+        acc.push(definition[2]);
       }
 
       return acc;
     }, []);
-    const resultDefinitions = Object.assign({}, ...matchedDefinitions, ...overrides);
 
-    return nonMakeClasses.join(' ') + insertStyles(resultDefinitions, options.rtl, options.target);
+    const resultDefinitions = Object.assign({}, ...matchedDefinitions, overrides);
+    const resultClasses = nonMakeClasses + insertStyles(resultDefinitions, options.rtl, options.target);
+
+    cxCache[cxCacheKey] = resultClasses;
+
+    return resultClasses;
   };
 }
 
