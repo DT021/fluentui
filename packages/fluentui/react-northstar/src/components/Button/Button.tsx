@@ -175,33 +175,15 @@ const useButtonStyles = makeStyles([
       maxWidth: pxToRem(280),
 
       backgroundColor: tokens.colorScheme.default.background,
+      borderColor: tokens.colorScheme.default.border,
       borderRadius: tokens.borderRadius,
+      borderStyle: 'solid',
+      borderWidth: tokens.borderWidth,
+      boxShadow: tokens.shadowLevel1,
       color: tokens.colorScheme.default.foreground,
+      outline: 0,
 
       '--button-border-radius': tokens.borderWidth,
-    }),
-  ],
-
-  [{ circular: true }, { '--button-border-radius': pxToRem(4) }],
-  [{ loading: true }, { minWidth: pxToRem(118) }],
-
-  [
-    { size: 'small' },
-    {
-      padding: `0 ${pxToRem(8)}`,
-      height: pxToRem(24),
-      minWidth: pxToRem(72),
-    },
-  ],
-
-  [
-    { text: false },
-    tokens => ({
-      outline: 0,
-      borderWidth: tokens.borderWidth,
-      borderStyle: 'solid',
-      borderColor: tokens.colorScheme.default.border,
-      boxShadow: tokens.shadowLevel1,
 
       ':hover': {
         backgroundColor: tokens.colorScheme.default.backgroundHover1,
@@ -241,10 +223,24 @@ const useButtonStyles = makeStyles([
       },
     }),
   ],
-  [{ text: false, size: 'small' }, { boxShadow: 'none' }],
+
+  [{ circular: true }, { '--button-border-radius': pxToRem(4) }],
+  [{ loading: true }, { minWidth: pxToRem(118) }],
 
   [
-    { primary: true, text: false },
+    { size: 'small' },
+    {
+      boxShadow: 'none',
+      height: pxToRem(24),
+      minWidth: pxToRem(72),
+      padding: `0 ${pxToRem(8)}`,
+    },
+  ],
+
+  [{ size: 'small' }, { boxShadow: 'none' }],
+
+  [
+    { primary: true },
     tokens => ({
       backgroundColor: tokens.colorScheme.brand.background,
       borderColor: 'transparent',

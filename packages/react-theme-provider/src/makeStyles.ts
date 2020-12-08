@@ -199,10 +199,6 @@ function resolveStyles(styles: any[], selector = '', result: any = {}): any {
   return result;
 }
 
-function strinfigyMatcher(matcherName: any, matcherValue: any): string {
-  return matcherName + '' + (matcherValue == null ? false : matcherValue);
-}
-
 function matchersToBits(definitions: any, matchers: any) {
   if (!definitions.mapping) {
     let i = 0;
@@ -215,7 +211,8 @@ function matchersToBits(definitions: any, matchers: any) {
       }
 
       Object.keys(matchers).forEach(matcherName => {
-        const maskKey = strinfigyMatcher(matcherName, matchers[matcherName]);
+        const matcherValue = matchers[matcherName];
+        const maskKey = '' + matcherName + matcherValue;
 
         definitions.mapping[maskKey] = 1 << i;
         i++;
@@ -235,7 +232,7 @@ function selectorsToBits(mapping: any, selectors: any): number {
 
   for (const selectorName in selectors) {
     const selectorValue = selectors[selectorName];
-    const selectorInBits = mapping[selectorName + '' + (selectorValue == null ? false : selectorValue)];
+    const selectorInBits = mapping['' + selectorName + selectorValue];
 
     mask += selectorInBits || 0; // can be undefined
   }
