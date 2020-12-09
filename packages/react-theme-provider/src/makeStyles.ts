@@ -2,11 +2,9 @@ import hashString from '@emotion/hash';
 import { Properties as CSSProperties } from 'csstype';
 // @ts-ignore
 import { expand } from 'inline-style-expand-shorthand';
-// @ts-ignore
-import * as _Stylis from 'stylis';
 import { convertProperty } from 'rtl-css-js/core';
 
-import { cssifyDeclaration } from './cssifyDeclaration';
+import { compileCSS } from './runtime/compileCSS';
 import { insertStyles } from './insertStyles';
 
 //
@@ -96,21 +94,6 @@ const graphSet = (graphNode: Map<any, any>, path: any[], value: any) => {
 //
 //
 
-const Stylis = (_Stylis as any).default || _Stylis;
-
-const stylis = new Stylis({
-  cascade: false,
-  compress: false,
-  global: false,
-  keyframe: false,
-  preserve: false,
-  semicolon: false,
-});
-
-//
-//
-//
-
 const regex = /^(:|\[|>|&)/;
 
 export default function isNestedSelector(property: string): boolean {
@@ -164,12 +147,10 @@ function resolveStyles(styles: any[], selector = '', result: any = {}): any {
         resolveStyles(propValue, selector + normalizeNestedProperty(propName), result);
       }
       // TODO: support media queries
+      // TODO: support support queries
     } else if (typeof propValue === 'string' || typeof propValue === 'number') {
       const className = HASH_PREFIX + hashString(selector + propName + propValue);
-
-      // cssfied union of property & value, i.e. `{ color: "red" }`
-      const declaration = cssifyDeclaration(propName, propValue);
-      const css = stylis('', `.${className}${selector}{${declaration}}`);
+      const css = compileCSS(className, selector, propName, propValue);
 
       // uniq key based on property & selector, used for merging later
       const key = selector + propName;
@@ -179,8 +160,7 @@ function resolveStyles(styles: any[], selector = '', result: any = {}): any {
       const flippedInRtl = rtl.key !== propName || rtl.value !== propValue;
 
       if (flippedInRtl) {
-        const declaration = cssifyDeclaration(rtl.key, rtl.value);
-        const rtlCSS = stylis('', `.r${className}${selector}{${declaration}}`);
+        const rtlCSS = compileCSS('r' + className, selector, rtl.key, rtl.value);
 
         // There is no sense to store RTL className as it's "r" + regular className
         result[key] = [className, css, rtlCSS];
@@ -352,7 +332,7 @@ export function makeNonReactStyles(styles: any) {
     const cxCacheKey = selectorsMask + '' + overridesHash;
 
     if (canUseCSSVariables && cxCache[cxCacheKey] !== undefined) {
-      // OOPS, Does not support MW
+      // TODO: OOPS, Does not support MW
       return nonMakeClasses + cxCache[cxCacheKey];
     }
 

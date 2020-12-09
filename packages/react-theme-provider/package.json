@@ -55,6 +55,7 @@
     "@fluentui/merge-styles": "^8.0.0-beta.3",
     "@fluentui/utilities": "^8.0.0-beta.8",
     "classnames": "^2.2.6",
+    "stylis": "^4.0.6",
     "tslib": "^1.10.0"
   },
   "peerDependencies": {
