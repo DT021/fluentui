@@ -4,8 +4,13 @@ import { Properties as CSSProperties } from 'csstype';
 import { expand } from 'inline-style-expand-shorthand';
 import { convertProperty } from 'rtl-css-js/core';
 
-import { compileCSS } from './runtime/compileCSS';
+import { compileCSS, hyphenateProperty } from './runtime/compileCSS';
 import { insertStyles } from './insertStyles';
+
+// /make-styles
+//   /babel - contains babel plugin/preset for built time - 0 kb
+//   /runtime - in dev contains all required utils, in prod - noop i.e. 0kb
+//   /runtime-ie11 - in dev - alias to runtime, in prod - optimized runtime 20kb
 
 //
 //
@@ -96,8 +101,12 @@ const graphSet = (graphNode: Map<any, any>, path: any[], value: any) => {
 
 const regex = /^(:|\[|>|&)/;
 
-export default function isNestedSelector(property: string): boolean {
+function isNestedSelector(property: string): boolean {
   return regex.test(property);
+}
+
+function isMediaQuery(property: string): boolean {
+  return property.substr(0, 6) === '@media';
 }
 
 function normalizeNestedProperty(nestedProperty: string): string {
@@ -129,7 +138,41 @@ const HASH_PREFIX = 'a';
 //
 //
 
-function resolveStyles(styles: any[], selector = '', result: any = {}): any {
+function cssifyObject(style: any) {
+  let css = '';
+
+  for (const property in style) {
+    const value = style[property];
+
+    if (typeof value !== 'string' && typeof value !== 'number') {
+      continue;
+    }
+
+    // prevents the semicolon after
+    // the last rule declaration
+    if (css) {
+      css += ';';
+    }
+
+    css += hyphenateProperty(property) + ':' + value;
+  }
+
+  return css;
+}
+
+function objectReduce(obj, reducer, initialValue) {
+  for (var key in obj) {
+    initialValue = reducer(initialValue, obj[key], key, obj);
+  }
+
+  return initialValue;
+}
+
+function cssifyKeyframeRule(frames: Object) {
+  return objectReduce(frames, (css, frame, percentage) => `${css}${percentage}{${cssifyObject(frame)}}`, '');
+}
+
+function resolveStyles(styles: any, selector = '', result: any = {}): any {
   const expandedStyles = expand(styles);
   const properties = Object.keys(expandedStyles) as (keyof CSSProperties)[];
 
@@ -145,17 +188,29 @@ function resolveStyles(styles: any[], selector = '', result: any = {}): any {
         //   propValue,
         // );
         resolveStyles(propValue, selector + normalizeNestedProperty(propName), result);
+      } else if (isMediaQuery(propName)) {
+        resolveStyles(propValue, selector + propName, result);
+      } else if (propName === 'animationName') {
+        const keyframe = cssifyKeyframeRule(propValue); // TODO: support RTL!
+        const animationName = HASH_PREFIX + hashString(keyframe);
+
+        // TODO call Stylis for prefixing
+        const keyframeCSS = `@keyframes ${animationName}{${keyframe}}`;
+
+        result[animationName] = [animationName, keyframeCSS /* rtlCSS */];
+
+        console.log('prop', propName, propValue, `@keyframes ${animationName}{${keyframe}}`);
+
+        resolveStyles({ animationName }, selector, result);
       }
-      // TODO: support media queries
       // TODO: support support queries
     } else if (typeof propValue === 'string' || typeof propValue === 'number') {
-      const className = HASH_PREFIX + hashString(selector + propName + propValue);
-      const css = compileCSS(className, selector, propName, propValue);
-
       // uniq key based on property & selector, used for merging later
       const key = selector + propName;
 
-      // TODO: what can actually flip in RTL?!
+      const className = HASH_PREFIX + hashString(selector + propName + propValue);
+      const css = compileCSS(className, selector, propName, propValue);
+
       const rtl = convertProperty(propName, propValue);
       const flippedInRtl = rtl.key !== propName || rtl.value !== propValue;
 
@@ -179,47 +234,6 @@ function resolveStyles(styles: any[], selector = '', result: any = {}): any {
   return result;
 }
 
-function matchersToBits(definitions: any, matchers: any) {
-  if (!definitions.mapping) {
-    let i = 0;
-    definitions.mapping = {};
-    definitions.forEach((definition: any) => {
-      const matchers = definition[0];
-
-      if (matchers === null) {
-        return null;
-      }
-
-      Object.keys(matchers).forEach(matcherName => {
-        const matcherValue = matchers[matcherName];
-        const maskKey = '' + matcherName + matcherValue;
-
-        definitions.mapping[maskKey] = 1 << i;
-        i++;
-      });
-    }, {});
-  }
-
-  if (matchers === null) {
-    return 0;
-  }
-
-  return selectorsToBits(definitions.mapping, matchers);
-}
-
-function selectorsToBits(mapping: any, selectors: any): number {
-  let mask = 0;
-
-  for (const selectorName in selectors) {
-    const selectorValue = selectors[selectorName];
-    const selectorInBits = mapping['' + selectorName + selectorValue];
-
-    mask += selectorInBits || 0; // can be undefined
-  }
-
-  return mask;
-}
-
 function resolveStylesToClasses(definitions: any[], tokens: any) {
   const resolvedStyles = definitions.map((definition, i) => {
     const matchers = definition[0];
@@ -235,13 +249,10 @@ function resolveStylesToClasses(definitions: any[], tokens: any) {
         return [matchers, null, resolvedStyles];
       }
 
-      // matchers should be also converted to bit masks
-      definitions[i][0] = matchersToBits(definitions, matchers);
-
       // if static cache is not present, eval it and mutate original object
       definitions[i][2] = resolveStyles(areTokenDependantStyles ? styles(tokens) : styles);
 
-      return [definition[0], null, definition[2]];
+      return [matchers, null, definition[2]];
     }
 
     // if CSS variables are not supported we have to re-eval only functions, otherwise static cache can be reused
@@ -255,24 +266,19 @@ function resolveStylesToClasses(definitions: any[], tokens: any) {
         return [matchers, resolvedStyles];
       }
 
-      // matchers should be also converted to bit masks
-      definitions[i][0] = matchersToBits(definitions, matchers);
-
       const resolveStyles1 = resolveStyles(styles(tokens));
       graphSet(graph, path, resolveStyles1);
 
-      return [definitions[i][0], null, resolveStyles1];
+      return [matchers, null, resolveStyles1];
     }
 
     if (resolvedStyles) {
-      return [definitions[i][0], null, resolvedStyles];
+      return [matchers, null, resolvedStyles];
     }
 
-    // matchers should be also converted to bit masks
-    definitions[i][0] = matchersToBits(definitions, matchers);
     definitions[i][2] = resolveStyles(styles);
 
-    return [definitions[i][0], null, definition[2]];
+    return [matchers, null, definition[2]];
   });
 
   // @ts-ignore
@@ -314,44 +320,51 @@ export function makeNonReactStyles(styles: any) {
 
     classNames.forEach(className => {
       if (typeof className === 'string') {
+        if (className === '') {
+          return;
+        }
+
         className.split(' ').forEach(cName => {
           if (options.target.cache[cName] !== undefined) {
             overrides[options.target.cache[cName][0]] = options.target.cache[cName][1];
             overridesCx += cName;
           } else {
-            nonMakeClasses += cName;
+            nonMakeClasses += cName + ' ';
           }
         });
       }
     });
 
     // @ts-ignore
-    const selectorsMask = selectorsToBits(resolvedStyles.mapping, selectors);
+    // const selectorsMask = selectorsToBits(resolvedStyles.mapping, selectors);
+
+    let matchedIndexes = '';
+
+    const matchedDefinitions = resolvedStyles.reduce((acc: any, definition: any, i: any) => {
+      const matcherFn = definition[0];
+
+      if (matcherFn === null || matcherFn(selectors)) {
+        acc.push(definition[2]);
+        matchedIndexes += i;
+      }
+
+      return acc;
+    }, []);
 
     const overridesHash = overridesCx === '' ? '' : overridesCx;
-    const cxCacheKey = selectorsMask + '' + overridesHash;
+    const cxCacheKey = matchedIndexes + '' + overridesHash;
 
     if (canUseCSSVariables && cxCache[cxCacheKey] !== undefined) {
       // TODO: OOPS, Does not support MW
       return nonMakeClasses + cxCache[cxCacheKey];
     }
 
-    const matchedDefinitions = resolvedStyles.reduce((acc: any, definition: any) => {
-      const matchersInBits = definition[0];
-
-      if (matchersInBits === 0 || !!(matchersInBits & selectorsMask)) {
-        acc.push(definition[2]);
-      }
-
-      return acc;
-    }, []);
-
     const resultDefinitions = Object.assign({}, ...matchedDefinitions, overrides);
-    const resultClasses = nonMakeClasses + insertStyles(resultDefinitions, options.rtl, options.target);
+    const resultClasses = insertStyles(resultDefinitions, options.rtl, options.target);
 
     cxCache[cxCacheKey] = resultClasses;
 
-    return resultClasses;
+    return nonMakeClasses + resultClasses;
   };
 }
 

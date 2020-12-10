@@ -51,18 +51,18 @@ const useStatusStyles = makeStyles([
     }),
   ],
 
-  [{ state: 'success' }, tokens => ({ backgroundColor: tokens.colorScheme.green.background })],
-  [{ state: 'info' }, tokens => ({ backgroundColor: tokens.colorScheme.brand.background })],
-  [{ state: 'warning' }, tokens => ({ backgroundColor: tokens.colorScheme.yellow.background })],
-  [{ state: 'error' }, tokens => ({ backgroundColor: tokens.colorScheme.red.background })],
+  [p => p.state === 'success', tokens => ({ backgroundColor: tokens.colorScheme.green.background })],
+  [p => p.state === 'info', tokens => ({ backgroundColor: tokens.colorScheme.brand.background })],
+  [p => p.state === 'warning', tokens => ({ backgroundColor: tokens.colorScheme.yellow.background })],
+  [p => p.state === 'error', tokens => ({ backgroundColor: tokens.colorScheme.red.background })],
 
-  [{ size: 'smallest' }, { width: pxToRem(6), height: pxToRem(6) }],
-  [{ size: 'smaller' }, { width: pxToRem(10), height: pxToRem(10) }],
-  [{ size: 'small' }, { width: pxToRem(10), height: pxToRem(10) }],
-  [{ size: 'medium' }, { width: pxToRem(10), height: pxToRem(10) }],
-  [{ size: 'large' }, { width: pxToRem(10), height: pxToRem(10) }],
-  [{ size: 'larger' }, { width: pxToRem(16), height: pxToRem(16) }],
-  [{ size: 'largest' }, { width: 0, height: 0 }],
+  [p => p.size === 'smallest', { width: pxToRem(6), height: pxToRem(6) }],
+  [p => p.size === 'smaller', { width: pxToRem(10), height: pxToRem(10) }],
+  [p => p.size === 'small', { width: pxToRem(10), height: pxToRem(10) }],
+  [p => p.size === 'medium', { width: pxToRem(10), height: pxToRem(10) }],
+  [p => p.size === 'large', { width: pxToRem(10), height: pxToRem(10) }],
+  [p => p.size === 'larger', { width: pxToRem(16), height: pxToRem(16) }],
+  [p => p.size === 'largest', { width: 0, height: 0 }],
 ]);
 
 const staticStatusStyles = [
@@ -93,57 +93,61 @@ const staticStatusStyles = [
   ],
 
   [
-    { state: 'success' },
+    p => p.state === 'success',
     tokens => ({ backgroundColor: tokens.colorScheme.green.background }),
     { backgroundColor: ['a109hrsy', '.a109hrsy{background-color:var(--theme-colorScheme-green-background);}'] },
   ],
   [
-    { state: 'info' },
+    p => p.state === 'info',
     tokens => ({ backgroundColor: tokens.colorScheme.brand.background }),
     { backgroundColor: ['a1qyxj3v', '.a1qyxj3v{background-color:var(--theme-colorScheme-brand-background);}'] },
   ],
   [
-    { state: 'warning' },
+    p => p.state === 'warning',
     tokens => ({ backgroundColor: tokens.colorScheme.yellow.background }),
     { backgroundColor: ['a1hm9uc3', '.a1hm9uc3{background-color:var(--theme-colorScheme-yellow-background);}'] },
   ],
   [
-    { state: 'error' },
+    p => p.state === 'error',
     tokens => ({ backgroundColor: tokens.colorScheme.red.background }),
     { backgroundColor: ['ao0oefl', '.ao0oefl{background-color:var(--theme-colorScheme-red-background);}'] },
   ],
 
   [
-    { size: 'smallest' },
+    p => p.size === 'smallest',
     null,
     { width: ['a1h7vuc3', '.a1h7vuc3{width:0.4286rem;}'], height: ['ac65nva', '.ac65nva{height:0.4286rem;}'] },
   ],
   [
-    { size: 'smaller' },
+    p => p.size === 'smaller',
     null,
     { width: ['a17zuqj1', '.a17zuqj1{width:0.7143rem;}'], height: ['af2ublo', '.af2ublo{height:0.7143rem;}'] },
   ],
   [
-    { size: 'small' },
+    p => p.size === 'small',
     null,
     { width: ['a17zuqj1', '.a17zuqj1{width:0.7143rem;}'], height: ['af2ublo', '.af2ublo{height:0.7143rem;}'] },
   ],
   [
-    { size: 'medium' },
+    p => p.size === 'medium',
     null,
     { width: ['a17zuqj1', '.a17zuqj1{width:0.7143rem;}'], height: ['af2ublo', '.af2ublo{height:0.7143rem;}'] },
   ],
   [
-    { size: 'large' },
+    p => p.size === 'large',
     null,
     { width: ['a17zuqj1', '.a17zuqj1{width:0.7143rem;}'], height: ['af2ublo', '.af2ublo{height:0.7143rem;}'] },
   ],
   [
-    { size: 'larger' },
+    p => p.size === 'larger',
     null,
     { width: ['asxa7o6', '.asxa7o6{width:1.1429rem;}'], height: ['awdvutt', '.awdvutt{height:1.1429rem;}'] },
   ],
-  [{ size: 'largest' }, null, { width: ['a3tsq5r', '.a3tsq5r{width:0;}'], height: ['aniina8', '.aniina8{height:0;}'] }],
+  [
+    p => p.size === 'largest',
+    null,
+    { width: ['a3tsq5r', '.a3tsq5r{width:0;}'], height: ['aniina8', '.aniina8{height:0;}'] },
+  ],
 ];
 const useStaticStatusStyles = makeStyles(staticStatusStyles);
 
@@ -172,10 +176,10 @@ const useStatusIconStyles = makeStyles([
     }),
   ],
 
-  [{ state: 'success' }, tokens => ({ color: tokens.colorScheme.green.foreground1 })],
-  [{ state: 'info' }, tokens => ({ color: tokens.colorScheme.default.foreground2 })],
-  [{ state: 'warning' }, tokens => ({ color: tokens.colorScheme.yellow.foreground2 })],
-  [{ state: 'error' }, tokens => ({ color: tokens.colorScheme.red.foreground2 })],
+  [p => p.state === 'success', tokens => ({ color: tokens.colorScheme.green.foreground1 })],
+  [p => p.state === 'info', tokens => ({ color: tokens.colorScheme.default.foreground2 })],
+  [p => p.state === 'warning', tokens => ({ color: tokens.colorScheme.yellow.foreground2 })],
+  [p => p.state === 'error', tokens => ({ color: tokens.colorScheme.red.foreground2 })],
 ]);
 
 const staticStatusIconStyles = [
@@ -210,22 +214,22 @@ const staticStatusIconStyles = [
   ],
 
   [
-    { state: 'success' },
+    p => p.state === 'success',
     tokens => ({ color: tokens.colorScheme.green.foreground1 }),
     { color: ['a1uyxhfx', '.a1uyxhfx{color:var(--theme-colorScheme-green-foreground1);}'] },
   ],
   [
-    { state: 'info' },
+    p => p.state === 'info',
     tokens => ({ color: tokens.colorScheme.default.foreground2 }),
     { color: ['a19vcx5o', '.a19vcx5o{color:var(--theme-colorScheme-default-foreground2);}'] },
   ],
   [
-    { state: 'warning' },
+    p => p.state === 'warning',
     tokens => ({ color: tokens.colorScheme.yellow.foreground2 }),
     { color: ['a17vukj9', '.a17vukj9{color:var(--theme-colorScheme-yellow-foreground2);}'] },
   ],
   [
-    { state: 'error' },
+    p => p.state === 'error',
     tokens => ({ color: tokens.colorScheme.red.foreground2 }),
     { color: ['a1j0lmpl', '.a1j0lmpl{color:var(--theme-colorScheme-red-foreground2);}'] },
   ],
@@ -245,8 +249,8 @@ export const Status: ComponentWithAs<'span', StatusProps> & FluentComponentStati
 
   const { className, icon, size, state } = props;
 
-  const rootClassName = useStatusStyles({ size, state }, statusClassName, className);
-  const iconClassName = useStatusIconStyles({ size, state });
+  const rootClassName = useStaticStatusStyles({ size, state }, statusClassName, className);
+  const iconClassName = useStaticStatusIconStyles({ size, state });
 
   const getA11Props = useAccessibility(props.accessibility, {
     debugName: Status.displayName,

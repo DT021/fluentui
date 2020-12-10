@@ -50,10 +50,35 @@ const useImageStyles = makeStyles([
     },
   ],
 
-  [{ avatar: true }, { borderRadius: pxToRem(9999), width: pxToRem(32) }],
-  [{ circular: true }, { borderRadius: pxToRem(9999) }],
+  // [
+  //   null,
+  //   {
+  //     color: 'green',
+  //
+  //     '@media screen and (max-width: 992px)': {
+  //       color: 'red',
+  //     },
+  //
+  //     animationName: {
+  //       from: {
+  //         transform: 'rotate(0deg)',
+  //       },
+  //       to: {
+  //         transform: 'rotate(360deg)',
+  //       },
+  //     },
+  //     animationIterationCount: 'infinite',
+  //     animationDuration: '5s',
+  //
+  //     ':global(body) &': {
+  //       color: 'green',
+  //     },
+  //   },
+  // ],
 
-  [{ fluid: true }, { width: '100%' }],
+  [p => p.avatar, { borderRadius: pxToRem(9999), width: pxToRem(32) }],
+  [p => p.circular, { borderRadius: pxToRem(9999) }],
+  [p => p.fluid, { width: '100%' }],
 ]);
 
 const staticImageStyles = [
@@ -69,15 +94,15 @@ const staticImageStyles = [
   ],
 
   [
-    { avatar: true },
+    p => p.avatar,
     null,
     {
       borderRadius: ['a10yvfpk', '.a10yvfpk{border-radius:714.2143rem;}'],
       width: ['a10vq2gu', '.a10vq2gu{width:2.2857rem;}'],
     },
   ],
-  [{ circular: true }, null, { borderRadius: ['a10yvfpk', '.a10yvfpk{border-radius:714.2143rem;}'] }],
-  [{ fluid: true }, null, { width: ['aly5x3f', '.aly5x3f{width:100%;}'] }],
+  [p => p.circular, null, { borderRadius: ['a10yvfpk', '.a10yvfpk{border-radius:714.2143rem;}'] }],
+  [p => p.fluid, null, { width: ['aly5x3f', '.aly5x3f{width:100%;}'] }],
 ];
 const useStaticImageStyles = makeStyles(staticImageStyles);
 

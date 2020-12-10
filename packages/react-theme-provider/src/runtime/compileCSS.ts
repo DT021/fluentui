@@ -9,7 +9,7 @@ function toHyphenLower(match: string): string {
   return '-' + match.toLowerCase();
 }
 
-function hyphenateProperty(name: string) {
+export function hyphenateProperty(name: string) {
   if (cache.hasOwnProperty(name)) {
     return cache[name];
   }
@@ -39,7 +39,7 @@ export function compileCSS(className: string, selector: string, property: string
     return serialize(compile(css), middleware([stringify]));
   }
 
-  const css = `.${className}${selector} ${cssDeclaration}`;
+  const css = `.${className} { ${selector || '&'} ${cssDeclaration} }`;
 
   return serialize(compile(css), middleware([stringify]));
 }

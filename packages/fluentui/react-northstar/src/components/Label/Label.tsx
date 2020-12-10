@@ -87,10 +87,10 @@ const useLabelStyles = makeStyles([
     },
   ],
 
-  [{ hasImage: true }, { paddingRight: '0px' }],
-  [{ hasImage: true, imagePosition: 'start' }, { paddingLeft: '0px' }],
+  [p => p.hasImage, { paddingRight: '0px' }],
+  [p => p.hasImage && p.imagePosition === 'start', { paddingLeft: '0px' }],
 
-  [{ circular: true }, { borderRadius: pxToRem(9999) }],
+  [p => p.circular, { borderRadius: pxToRem(9999) }],
 ]);
 
 const staticLabelStyles = [
@@ -121,34 +121,34 @@ const staticLabelStyles = [
   ],
 
   [
-    { hasImage: true },
+    p => p.hasImage,
     null,
     { paddingRight: ['aifp7yv', '.aifp7yv{padding-right:0px;}', '.raifp7yv{padding-left:0px;}'] },
   ],
 
   [
-    { hasImage: true, imagePosition: 'start' },
+    p => p.hasImage && p.imagePosition === 'start',
     null,
     { paddingLeft: ['a1asdtw4', '.a1asdtw4{padding-left:0px;}', '.ra1asdtw4{padding-right:0px;}'] },
   ],
 
-  [{ circular: true }, null, { borderRadius: ['a10yvfpk', '.a10yvfpk{border-radius:714.2143rem;}'] }],
+  [p => p.circular, null, { borderRadius: ['a10yvfpk', '.a10yvfpk{border-radius:714.2143rem;}'] }],
 ];
 const useStaticLabelStyles = makeStyles(staticLabelStyles);
 
 const useLabelContentStyles = makeStyles([
-  [{ hasStartElement: true }, { marginLeft: pxToRem(3) }],
-  [{ hasEndElement: true }, { marginRight: pxToRem(3) }],
+  [p => p.hasStartElement, { marginLeft: pxToRem(3) }],
+  [p => p.hasEndElement, { marginRight: pxToRem(3) }],
 ]);
 
 const staticLabelContentStyles = [
   [
-    { hasStartElement: true },
+    p => p.hasStartElement,
     null,
     { marginLeft: ['a1kdtsql', '.a1kdtsql{margin-left:0.2143rem;}', '.ra1kdtsql{margin-right:0.2143rem;}'] },
   ],
   [
-    { hasEndElement: true },
+    p => p.hasEndElement,
     null,
     { marginRight: ['ald2d31', '.ald2d31{margin-right:0.2143rem;}', '.rald2d31{margin-left:0.2143rem;}'] },
   ],
@@ -174,7 +174,7 @@ const useLabelIconStyles = makeStyles([
       },
     },
   ],
-  [{ hasActionableIcon: true }, { cursor: 'pointer' }],
+  [p => p.hasActionableIcon, { cursor: 'pointer' }],
 ]);
 
 const staticLabelIconStyles = [
@@ -202,7 +202,7 @@ const staticLabelIconStyles = [
       ' > :first-child svgwidth': ['a101b0fn', '.a101b0fn>:first-child svg{width:100%;}'],
     },
   ],
-  [{ hasActionableIcon: true }, { cursor: ['a1k6fduh', '.a1k6fduh{cursor:pointer;}'] }],
+  [p => p.hasActionableIcon, null, { cursor: ['a1k6fduh', '.a1k6fduh{cursor:pointer;}'] }],
 ];
 
 const useStaticLabelIconStyles = makeStyles(staticLabelIconStyles);
@@ -247,13 +247,13 @@ export const Label: ComponentWithAs<'span', LabelProps> & FluentComponentStaticP
   const hasImage = !!image;
   const hasIcon = !!icon;
 
-  const rootClassName = useLabelStyles({ color, hasImage, circular, imagePosition }, labelClassName, className);
-  const contentClassName = useLabelContentStyles({
+  const rootClassName = useStaticLabelStyles({ color, hasImage, circular, imagePosition }, labelClassName, className);
+  const contentClassName = useStaticLabelContentStyles({
     hasStartElement: (hasImage && imagePosition === 'start') || (hasIcon && iconPosition === 'start'),
     hasEndElement: (hasImage && imagePosition === 'end') || (hasIcon && iconPosition === 'end'),
   });
-  const iconClassName = useLabelIconStyles({ hasActionableIcon: _.has(icon, 'onClick') });
-  const imageClassName = useLabelImageStyles();
+  const iconClassName = useStaticLabelIconStyles({ hasActionableIcon: _.has(icon, 'onClick') });
+  const imageClassName = useStaticLabelImageStyles();
 
   const ElementType = getElementType(props);
   const unhandledProps = useUnhandledProps(Label.handledProps, props);

@@ -224,11 +224,11 @@ const useButtonStyles = makeStyles([
     }),
   ],
 
-  [{ circular: true }, { '--button-border-radius': pxToRem(4) }],
-  [{ loading: true }, { minWidth: pxToRem(118) }],
+  [p => p.circular, { '--button-border-radius': pxToRem(4) }],
+  [p => p.loading, { minWidth: pxToRem(118) }],
 
   [
-    { size: 'small' },
+    p => p.size === 'small',
     {
       boxShadow: 'none',
       height: pxToRem(24),
@@ -237,10 +237,10 @@ const useButtonStyles = makeStyles([
     },
   ],
 
-  [{ size: 'small' }, { boxShadow: 'none' }],
+  [p => p.size === 'small', { boxShadow: 'none' }],
 
   [
-    { primary: true },
+    p => p.primary,
     tokens => ({
       backgroundColor: tokens.colorScheme.brand.background,
       borderColor: 'transparent',
@@ -277,7 +277,7 @@ const useButtonStyles = makeStyles([
   ],
 
   [
-    { disabled: true },
+    p => p.disabled,
     tokens => ({
       cursor: 'default',
       pointerEvents: 'none',
@@ -294,7 +294,7 @@ const useButtonStyles = makeStyles([
     }),
   ],
   [
-    { disabled: true, text: true },
+    p => p.disabled && p.text,
     tokens => ({
       color: tokens.colorScheme.brand.foregroundDisabled1,
       backgroundColor: 'transparent',
@@ -305,7 +305,7 @@ const useButtonStyles = makeStyles([
     }),
   ],
 
-  [{ fluid: true }, { width: '100%', maxWidth: '100%' }],
+  [p => p.fluid, { width: '100%', maxWidth: '100%' }],
 ]);
 const useButtonContentStyles = makeStyles([
   [
@@ -326,7 +326,7 @@ const useButtonContentStyles = makeStyles([
   ],
 
   [
-    { size: 'small' },
+    p => p.size === 'small',
     tokens => ({
       fontSize: tokens.fontSizes.small,
       lineHeight: tokens.lineHeightSmall,

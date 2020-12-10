@@ -31,13 +31,13 @@ const useAvatarStyles = makeStyles([
     },
   ],
 
-  [{ size: 'smallest' }, { height: pxToRem(20), width: pxToRem(20) }],
-  [{ size: 'smaller' }, { height: pxToRem(24), width: pxToRem(24) }],
-  [{ size: 'small' }, { height: pxToRem(28), width: pxToRem(28) }],
-  [{ size: 'medium' }, { height: pxToRem(32), width: pxToRem(32) }],
-  [{ size: 'large' }, { height: pxToRem(44), width: pxToRem(44) }],
-  [{ size: 'larger' }, { height: pxToRem(64), width: pxToRem(64) }],
-  [{ size: 'largest' }, { height: pxToRem(96), width: pxToRem(96) }],
+  [p => p.size === 'smallest', { height: pxToRem(20), width: pxToRem(20) }],
+  [p => p.size === 'smaller', { height: pxToRem(24), width: pxToRem(24) }],
+  [p => p.size === 'small', { height: pxToRem(28), width: pxToRem(28) }],
+  [p => p.size === 'medium', { height: pxToRem(32), width: pxToRem(32) }],
+  [p => p.size === 'large', { height: pxToRem(44), width: pxToRem(44) }],
+  [p => p.size === 'larger', { height: pxToRem(64), width: pxToRem(64) }],
+  [p => p.size === 'largest', { height: pxToRem(96), width: pxToRem(96) }],
 ]);
 
 const staticAvatarStyles = [
@@ -52,37 +52,37 @@ const staticAvatarStyles = [
     },
   ],
   [
-    { size: 'smallest' },
+    p => p.size === 'smallest',
     null,
     { height: ['ah012zl', '.ah012zl{height:1.4286rem;}'], width: ['a19ec5sb', '.a19ec5sb{width:1.4286rem;}'] },
   ],
   [
-    { size: 'smaller' },
+    p => p.size === 'smaller',
     null,
     { height: ['avq1clm', '.avq1clm{height:1.7143rem;}'], width: ['a1kgoap5', '.a1kgoap5{width:1.7143rem;}'] },
   ],
   [
-    { size: 'small' },
+    p => p.size === 'small',
     null,
     { height: ['a1xpi36y', '.a1xpi36y{height:2rem;}'], width: ['a137enl0', '.a137enl0{width:2rem;}'] },
   ],
   [
-    { size: 'medium' },
+    p => p.size === 'medium',
     null,
     { height: ['as51yi9', '.as51yi9{height:2.2857rem;}'], width: ['a10vq2gu', '.a10vq2gu{width:2.2857rem;}'] },
   ],
   [
-    { size: 'large' },
+    p => p.size === 'large',
     null,
     { height: ['avonqzr', '.avonqzr{height:3.1429rem;}'], width: ['aexyc64', '.aexyc64{width:3.1429rem;}'] },
   ],
   [
-    { size: 'larger' },
+    p => p.size === 'larger',
     null,
     { height: ['amsujci', '.amsujci{height:4.5714rem;}'], width: ['aoni65q', '.aoni65q{width:4.5714rem;}'] },
   ],
   [
-    { size: 'largest' },
+    p => p.size === 'largest',
     null,
     { height: ['a4c4g8p', '.a4c4g8p{height:6.8571rem;}'], width: ['a1uudkc', '.a1uudkc{width:6.8571rem;}'] },
   ],
@@ -112,34 +112,34 @@ const useAvatarIconStyles = makeStyles([
     }),
   ],
 
-  [{ square: true }, { borderRadius: pxToRem(3) }],
+  [p => p.square, { borderRadius: pxToRem(3) }],
 
   [
-    { size: 'smallest' },
+    p => p.size === 'smallest',
     { height: pxToRem(20), width: pxToRem(20), '& > :first-child': { height: pxToRem(10), width: pxToRem(10) } },
   ],
   [
-    { size: 'smaller' },
+    p => p.size === 'smaller',
     { height: pxToRem(24), width: pxToRem(24), '& > :first-child': { height: pxToRem(12), width: pxToRem(12) } },
   ],
   [
-    { size: 'small' },
+    p => p.size === 'small',
     { height: pxToRem(28), width: pxToRem(28), '& > :first-child': { height: pxToRem(16), width: pxToRem(16) } },
   ],
   [
-    { size: 'medium' },
+    p => p.size === 'medium',
     { height: pxToRem(32), width: pxToRem(32), '& > :first-child': { height: pxToRem(16), width: pxToRem(16) } },
   ],
   [
-    { size: 'large' },
+    p => p.size === 'large',
     { height: pxToRem(44), width: pxToRem(44), '& > :first-child': { height: pxToRem(20), width: pxToRem(20) } },
   ],
   [
-    { size: 'larger' },
+    p => p.size === 'larger',
     { height: pxToRem(64), width: pxToRem(64), '& > :first-child': { height: pxToRem(32), width: pxToRem(32) } },
   ],
   [
-    { size: 'largest' },
+    p => p.size === 'largest',
     { height: pxToRem(96), width: pxToRem(96), '& > :first-child': { height: pxToRem(40), width: pxToRem(40) } },
   ],
 ]);
@@ -184,10 +184,10 @@ const staticAvatarIconStyles = [
     },
   ],
 
-  [{ square: true }, null, { borderRadius: ['a1dms8l0', '.a1dms8l0{border-radius:0.2143rem;}'] }],
+  [p => p.square, null, { borderRadius: ['a1dms8l0', '.a1dms8l0{border-radius:0.2143rem;}'] }],
 
   [
-    { size: 'smallest' },
+    p => p.size === 'smallest',
     null,
     {
       height: ['ah012zl', '.ah012zl{height:1.4286rem;}'],
@@ -197,7 +197,7 @@ const staticAvatarIconStyles = [
     },
   ],
   [
-    { size: 'smaller' },
+    p => p.size === 'smaller',
     null,
     {
       height: ['avq1clm', '.avq1clm{height:1.7143rem;}'],
@@ -207,7 +207,7 @@ const staticAvatarIconStyles = [
     },
   ],
   [
-    { size: 'small' },
+    p => p.size === 'small',
     null,
     {
       height: ['a1xpi36y', '.a1xpi36y{height:2rem;}'],
@@ -217,7 +217,7 @@ const staticAvatarIconStyles = [
     },
   ],
   [
-    { size: 'medium' },
+    p => p.size === 'medium',
     null,
     {
       height: ['as51yi9', '.as51yi9{height:2.2857rem;}'],
@@ -227,7 +227,7 @@ const staticAvatarIconStyles = [
     },
   ],
   [
-    { size: 'large' },
+    p => p.size === 'large',
     null,
     {
       height: ['avonqzr', '.avonqzr{height:3.1429rem;}'],
@@ -237,7 +237,7 @@ const staticAvatarIconStyles = [
     },
   ],
   [
-    { size: 'larger' },
+    p => p.size === 'larger',
     null,
     {
       height: ['amsujci', '.amsujci{height:4.5714rem;}'],
@@ -247,7 +247,7 @@ const staticAvatarIconStyles = [
     },
   ],
   [
-    { size: 'largest' },
+    p => p.size === 'largest',
     null,
     {
       height: ['a4c4g8p', '.a4c4g8p{height:6.8571rem;}'],
@@ -269,7 +269,7 @@ const useAvatarImageStyles = makeStyles([
       width: '100%',
     },
   ],
-  [{ square: true }, { borderRadius: pxToRem(3) }],
+  [p => p.square, { borderRadius: pxToRem(3) }],
 ]);
 
 const staticAvatarImageStyles = [
@@ -283,7 +283,7 @@ const staticAvatarImageStyles = [
       width: ['aly5x3f', '.aly5x3f{width:100%;}'],
     },
   ],
-  [{ square: true }, null, { borderRadius: ['a1dms8l0', '.a1dms8l0{border-radius:0.2143rem;}'] }],
+  [p => p.square, null, { borderRadius: ['a1dms8l0', '.a1dms8l0{border-radius:0.2143rem;}'] }],
 ];
 const useStaticAvatarImageStyles = makeStyles(staticAvatarImageStyles);
 
@@ -298,34 +298,34 @@ const useAvatarLabelStyles = makeStyles([
     },
   ],
 
-  [{ square: true }, { borderRadius: pxToRem(3) }],
+  [p => p.square, { borderRadius: pxToRem(3) }],
 
   [
-    { size: 'smallest' },
+    p => p.size === 'smallest',
     { fontSize: pxToRem(20 / 2.333), lineHeight: pxToRem(20), height: pxToRem(20), width: pxToRem(20) },
   ],
   [
-    { size: 'smaller' },
+    p => p.size === 'smaller',
     { fontSize: pxToRem(24 / 2.333), lineHeight: pxToRem(24), height: pxToRem(24), width: pxToRem(24) },
   ],
   [
-    { size: 'small' },
+    p => p.size === 'small',
     { fontSize: pxToRem(28 / 2.333), lineHeight: pxToRem(28), height: pxToRem(28), width: pxToRem(28) },
   ],
   [
-    { size: 'medium' },
+    p => p.size === 'medium',
     { fontSize: pxToRem(32 / 2.333), lineHeight: pxToRem(32), height: pxToRem(32), width: pxToRem(32) },
   ],
   [
-    { size: 'large' },
+    p => p.size === 'large',
     { fontSize: pxToRem(44 / 2.333), lineHeight: pxToRem(44), height: pxToRem(44), width: pxToRem(44) },
   ],
   [
-    { size: 'larger' },
+    p => p.size === 'larger',
     { fontSize: pxToRem(64 / 2.333), lineHeight: pxToRem(64), height: pxToRem(64), width: pxToRem(64) },
   ],
   [
-    { size: 'largest' },
+    p => p.size === 'largest',
     { fontSize: pxToRem(96 / 2.333), lineHeight: pxToRem(96), height: pxToRem(96), width: pxToRem(96) },
   ],
 ]);
@@ -344,9 +344,9 @@ const staticLabelStyles = [
       paddingLeft: ['a1cnd47f', '.a1cnd47f{padding-left:0;}', '.ra1cnd47f{padding-right:0;}'],
     },
   ],
-  [{ square: true }, null, { borderRadius: ['a1dms8l0', '.a1dms8l0{border-radius:0.2143rem;}'] }],
+  [p => p.square, null, { borderRadius: ['a1dms8l0', '.a1dms8l0{border-radius:0.2143rem;}'] }],
   [
-    { size: 'smallest' },
+    p => p.size === 'smallest',
     null,
     {
       fontSize: ['a1n3tkqd', '.a1n3tkqd{font-size:0.6123rem;}'],
@@ -356,7 +356,7 @@ const staticLabelStyles = [
     },
   ],
   [
-    { size: 'smaller' },
+    p => p.size === 'smaller',
     null,
     {
       fontSize: ['a5uuiz6', '.a5uuiz6{font-size:0.7348rem;}'],
@@ -366,7 +366,7 @@ const staticLabelStyles = [
     },
   ],
   [
-    { size: 'small' },
+    p => p.size === 'small',
     null,
     {
       fontSize: ['a140ezmv', '.a140ezmv{font-size:0.8573rem;}'],
@@ -376,7 +376,7 @@ const staticLabelStyles = [
     },
   ],
   [
-    { size: 'medium' },
+    p => p.size === 'medium',
     null,
     {
       fontSize: ['a880ecx', '.a880ecx{font-size:0.9797rem;}'],
@@ -386,7 +386,7 @@ const staticLabelStyles = [
     },
   ],
   [
-    { size: 'large' },
+    p => p.size === 'large',
     null,
     {
       fontSize: ['ab33vjb', '.ab33vjb{font-size:1.3471rem;}'],
@@ -396,7 +396,7 @@ const staticLabelStyles = [
     },
   ],
   [
-    { size: 'larger' },
+    p => p.size === 'larger',
     null,
     {
       fontSize: ['ajt7aj5', '.ajt7aj5{font-size:1.9595rem;}'],
@@ -406,7 +406,7 @@ const staticLabelStyles = [
     },
   ],
   [
-    { size: 'largest' },
+    p => p.size === 'largest',
     null,
     {
       fontSize: ['ag7k9p2', '.ag7k9p2{font-size:2.9392rem;}'],
@@ -498,11 +498,11 @@ export const Avatar: ComponentWithAs<'div', AvatarProps> & FluentComponentStatic
     rtl: context.rtl,
   });
 
-  const rootClassName = useAvatarStyles({ size }, avatarClassName, className);
-  const iconClassName = useAvatarIconStyles({ square, size });
-  const imageClassName = useAvatarImageStyles({ square });
-  const labelClassName = useAvatarLabelStyles({ square, size });
-  const statusClassName = useAvatarStatusStyles();
+  const rootClassName = useStaticAvatarStyles({ size }, avatarClassName, className);
+  const iconClassName = useStaticAvatarIconStyles({ square, size });
+  const imageClassName = useStaticAvatarImageStyles({ square });
+  const labelClassName = useStaticAvatarLabelStyles({ square, size });
+  const statusClassName = useStaticAvatarStatusStyles();
 
   const ElementType = getElementType(props);
   const unhandledProps = useUnhandledProps(Avatar.handledProps, props);
